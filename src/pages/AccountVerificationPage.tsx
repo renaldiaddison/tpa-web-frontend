@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { GetLink } from "../queries/inviteLinkQueries";
 import { ActivateAccount, GetAllUsers } from "../queries/userQueries";
 
 const AccountVerificationPage = () => {
@@ -9,11 +10,23 @@ const AccountVerificationPage = () => {
 
   const [activateAccount] = useMutation(ActivateAccount);
 
+  const { loading, error, data } = useQuery(GetLink, {
+    variables: {
+      id: p.id
+    }
+  })
+
+  if (loading) return <h1 className="m-10 font-bold">Loading...</h1>
+
+  if (error) return <h1 className="m-10 font-bold">Error...</h1>
+
+  console.log(data.getLink.userId)
+
   const handleVerify = (e: any) => {
     e.preventDefault();
     activateAccount({
       variables: {
-        id: p.id,
+        id: data.getLink.userId,
       },
     })
       .then(() => {

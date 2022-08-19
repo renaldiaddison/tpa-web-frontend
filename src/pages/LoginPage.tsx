@@ -1,11 +1,18 @@
 import { useMutation } from "@apollo/client";
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useLocalStorage } from "../hooks/LocalStorage";
+import { useUserContext } from "../lib/UserContext";
 import { Login } from "../queries/userQueries";
 import "../styles/css-library.scss";
 
 const LoginPage = () => {
   const [loginUser] = useMutation(Login);
+
+  const navigate = useNavigate();
+
+  const [user, setUser] = useLocalStorage("user", {});
+
   const handleLogin = (e: any) => {
     e.preventDefault();
     loginUser({
@@ -15,8 +22,16 @@ const LoginPage = () => {
           .value,
       },
     })
-      .then(() => {
-        console.log("Logged In");
+      .then((x) => {
+        const loginData = x.data.login;
+        setUser({
+          id: loginData.id,
+          email: loginData.email,
+          name: loginData.name,
+          token: loginData.token,
+        });
+
+        navigate("/home");
       })
       .catch((err) => {
         console.log("err" + err);
