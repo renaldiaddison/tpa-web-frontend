@@ -1,10 +1,10 @@
 import { useMutation } from "@apollo/client";
-import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../hooks/LocalStorage";
-import { useUserContext } from "../lib/UserContext";
 import { Login } from "../queries/userQueries";
 import "../styles/css-library.scss";
+import Logo from "../components/Logo";
+import { toastError, toastSuccess } from "../script/Toast";
 
 const LoginPage = () => {
   const [loginUser] = useMutation(Login);
@@ -15,27 +15,41 @@ const LoginPage = () => {
 
   const handleLogin = (e: any) => {
     e.preventDefault();
-    loginUser({
-      variables: {
-        email: (document.getElementById("email") as HTMLInputElement).value,
-        password: (document.getElementById("password") as HTMLInputElement)
-          .value,
-      },
-    })
-      .then((x) => {
-        const loginData = x.data.login;
-        setUser({
-          id: loginData.id,
-          email: loginData.email,
-          name: loginData.name,
-          token: loginData.token,
-        });
+    const email = (document.getElementById("email") as HTMLInputElement).value;
+    const password = (document.getElementById("password") as HTMLInputElement)
+      .value;
 
-        navigate("/home");
+    var mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (email === "") {
+      toastError("Error: Email cannot be empty");
+    } else if (!email.match(mailFormat)) {
+      toastError("Error: Please enter a valid email");
+    } else if (password === "") {
+      toastError("Error: Password cannot be empty");
+    } else {
+      loginUser({
+        variables: {
+          email: email,
+          password: password,
+        },
       })
-      .catch((err) => {
-        console.log("err" + err);
-      });
+        .then((x) => {
+          const loginData = x.data.login;
+          setUser({
+            id: loginData.id,
+            email: loginData.email,
+            name: loginData.name,
+            token: loginData.token,
+          });
+
+          toastSuccess("Success: Logged in as " + loginData.name)
+          navigate("/home");
+        })
+        .catch((err) => {
+          toastError(String(err));
+        });
+    }
   };
 
   function showPass() {
@@ -48,14 +62,21 @@ const LoginPage = () => {
   }
   return (
     <div className="h-screen">
+      <Logo />
       <div className="h-full flex justify-center items-center">
         <div className="w-full max-w-sm border-2 items-center shadow-md rounded-lg">
-          <p className="py-6 px-8 text-center text-2xl font-bold border-b-2 justify-between items-center">
-            Login
-          </p>
+          <div className="pb-1 border-b-2">
+            <p className="px-8 text-2xl font-bold justify-between items-center">
+              Login
+            </p>
+            <p className="px-8 text-sm justify-between items-center mt-minus-1">
+              Stay updated on your professional world
+            </p>
+          </div>
+
           <form
             onSubmit={handleLogin}
-            className="bg-white rounded-lg px-8 pt-6 pb-6 mb-4"
+            className="bg-white rounded-lg px-8 pt-6 mb-4"
           >
             <div className="mb-4">
               <label
@@ -87,33 +108,38 @@ const LoginPage = () => {
                 placeholder="Password"
               ></input>
             </div>
+
             <div className="flex mb-4">
               <input
-                className="form-check-input h-4 w-4 border  border-gray-300 rounded-lg-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus-outline-none mt-1 mr-2"
+                className="h-4 w-4 border border-gray-300 rounded-lg-sm bg-white checked:bg-blue-600 checked:border-blue-600 mr-2"
                 type="checkbox"
                 onClick={showPass}
                 id="flexCheckDefault"
                 name="flexCheckDefault"
               ></input>
               <label
-                className="form-check-label inline-block text-gray-800"
+                className="form-check-label inline-block text-gray-800 mt-0"
                 htmlFor="flexCheckDefault"
               >
                 Show Password
               </label>
             </div>
+
             <div className="items-center justify-between">
               <button
-                className="w-full bg-blue-500 button-style text-white font-bold py-2 px-4 rounded-lg focus-outline-none outline-none"
+                className="w-full cursor-pointer bg-blue-500 border-blue-500 button-style text-white font-bold py-2 px-4 rounded-lg"
                 type="submit"
               >
                 Login
               </button>
               <div className="flex text-sm justify-center pt-3">
-                <p className="mr-1">Not a member?</p>
-                <p className="align-baseline font-bold text-blue-500">
-                  <Link to="/register">Register here</Link>
+                <p className="mr-1">New to LinkedIn?</p>
+                <p className="align-baseline">
+                  <Link to="/register">Join now</Link>
                 </p>
+              </div>
+              <div className="flex text-sm justify-center pb-4">
+                <Link to="/forgot-password">Forgot password?</Link>
               </div>
             </div>
           </form>

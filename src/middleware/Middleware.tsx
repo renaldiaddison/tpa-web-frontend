@@ -4,12 +4,20 @@ import { useLocalStorage } from "../hooks/LocalStorage";
 import { useUserContext } from "../lib/UserContext";
 
 export default function ProtectedRoute({ children }: any) {
-  const [user, setUser] = useLocalStorage("user", {})
-  // const userContext = useContext(useUserContext);
-  // const user = userContext.user;
+  const [user, setUser] = useLocalStorage("user", {});
 
   if (Object.keys(user).length === 0) {
     return <Navigate to="/" />;
+  }
+
+  return children;
+}
+
+export function UnprotectedRoute({ children }: any) {
+  const [user, setUser] = useLocalStorage("user", {});
+
+  if (Object.keys(user).length !== 0) {
+    return <Navigate to="/home" />;
   }
 
   return children;

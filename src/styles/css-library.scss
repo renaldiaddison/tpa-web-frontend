@@ -1,7 +1,7 @@
-$black:#000000;
-$white:#ffffff;
-$blue: #0077B5;
-$blue-light: #00A0DC;
+$black: #000000;
+$white: #ffffff;
+$blue: #0077b5;
+$blue-light: #00a0dc;
 $blue-dark: #0766be;
 $grey: rgb(120, 100, 100);
 
@@ -35,21 +35,20 @@ body {
 }
 
 .focus-outline-none:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
+  outline: none;
 }
 
 .button-style:hover {
   background-color: rgb(29 78 216);
 }
 
-.navbar-logo{
+.navbar-logo {
   scale: 250%;
   fill: $blue;
-  margin: 30px
+  margin: 30px;
 }
 
-.navbar-items{
+.navbar-items {
   width: 15%;
   height: 55px;
   // border:1px solid rgba(0, 0, 0, 0.50);
@@ -58,29 +57,29 @@ body {
   align-items: center;
   justify-content: center;
   padding-top: 25px;
-  .navbar-icon{
-      scale: 200%;
-      fill: $grey;
+  .navbar-icon {
+    scale: 200%;
+    fill: $grey;
   }
-  .item-label{
-      color: $grey;
+  .item-label {
+    color: $grey;
+    font-size: 12px;
+    margin: 10px;
+  }
+  &:hover {
+    .navbar-icon {
+      scale: 200%;
+      fill: $black;
+    }
+    .item-label {
+      color: $black;
       font-size: 12px;
       margin: 10px;
-  }
-  &:hover{
-      .navbar-icon{
-          scale: 200%;
-          fill: $black;
-      }
-      .item-label{
-          color: $black;
-          font-size: 12px;
-          margin: 10px;
-      }
+    }
   }
 }
 
-.navbar-menu-container{
+.navbar-menu-container {
   height: 65px;
   width: 850px;
   display: flex;
@@ -89,7 +88,7 @@ body {
   justify-content: space-evenly;
 }
 
-.navbar{
+.navbar {
   height: 65px;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 15px;
   display: flex;
@@ -98,15 +97,15 @@ body {
   justify-content: center;
 }
 
-.searchbar{
+.searchbar {
   color: $black;
   font-size: 15px;
   width: 300px;
   height: 40px;
   border-radius: 5px;
-  padding-left:10px;
+  padding-left: 10px;
   margin-right: 200px;
-  border:1px solid rgba(0, 0, 0, 0.50);
+  border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 // Display
@@ -1034,7 +1033,7 @@ p.t-52 {
   margin-bottom: 0px;
 }
 .mt-0 {
-  margin-top: 0px;
+  margin-top: 2.2px;
 }
 .mr-0 {
   margin-right: 0px;
@@ -1059,6 +1058,10 @@ p.t-52 {
 .mt-px {
   margin-top: 1px;
 }
+.mt-minus-1 {
+  margin-top: -15px;
+}
+
 .mr-px {
   margin-right: 1px;
 }
@@ -3606,4 +3609,15 @@ p.t-52 {
 }
 .sticky {
   position: sticky;
+}
+
+// Cursor
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+// Border Color
+.border-blue-500 {
+  border-color: rgb(59 130 246);
 }

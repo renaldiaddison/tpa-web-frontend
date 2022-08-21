@@ -1,10 +1,15 @@
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import UserContext from "./lib/UserContext";
-import ProtectedRoute from "./middleware/ProtectedRoute";
+import ProtectedRoute, { UnprotectedRoute } from "./middleware/Middleware";
 import AccountVerificationPage from "./pages/AccountVerificationPage";
+import ErrorPage from "./pages/ErrorPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 const Protected = () => {
   return (
@@ -14,18 +19,35 @@ const Protected = () => {
   );
 };
 
+const Unprotected = () => {
+  return (
+    <UnprotectedRoute>
+      <Outlet />
+    </UnprotectedRoute>
+  );
+};
+
 function App() {
   return (
-    // <UserContext>
-    <Routes>
-      <Route path="/" element={<LoginPage />}></Route>
-      <Route path="/register" element={<RegisterPage />}></Route>
-      <Route path="/:id" element={<AccountVerificationPage />}></Route>
-      <Route element={<Protected />}>
-        <Route path="/home" element={<HomePage />}></Route>
-      </Route>
-    </Routes>
-    // </UserContext>
+    <>
+      {/* <ToastContainer></ToastContainer> */}
+      <Toaster position="bottom-left"/>
+      <Routes>
+        <Route element={<Unprotected />}>
+          <Route path="/" element={<LoginPage />}></Route>
+          <Route path="/register" element={<RegisterPage />}></Route>
+          <Route path="/activate-account/:id" element={<AccountVerificationPage />}></Route>
+          <Route path="/forgot-password" element={<ForgotPasswordPage />}></Route>
+          <Route path="/reset-password/:id" element={<ResetPasswordPage />}></Route>
+        </Route>
+        <Route element={<Protected />}>
+          <Route path="/home" element={<HomePage />}></Route>
+        </Route>
+        {/* <Route path="/PageNotFound" element={<ErrorPage errorCode ="404" errorDefinition = "Page Not Found"></ErrorPage>}></Route>
+        <Route path="*" element={<Navigate to="/PageNotFound"></Navigate>}></Route> */}
+        <Route path="*" element={<ErrorPage errorCode ="404" errorDefinition = "Page Not Found"></ErrorPage>}></Route>
+      </Routes>
+    </>
   );
 }
 

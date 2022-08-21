@@ -37,3 +37,9 @@ export const GetAllUsers = gql`
     }
   }
 `;
+
+export const ResetPassword = gql`
+  mutation ResetPassword($email: String!, $newPassword: String!) {
+    resetPassword(email: $email, newPassword: $newPassword)
+  }
+`;
