@@ -7,7 +7,8 @@ const Logo = () => {
 
   return (
     <img
-      src="src\assets\Logo.png"
+      src="../src\assets\Logo.png"
+      // src="../assets/Logo.png"
       onClick={handleLogoClick}
       className="fixed pt-10 pl-10 cursor-pointer"
       width="130"

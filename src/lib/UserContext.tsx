@@ -1,14 +1,14 @@
 import { createContext, useState } from "react";
+import { useLocalStorage } from '../hooks/LocalStorage';
 
-export const useUserContext = createContext(null as any);
+export const UserContext = createContext(null as any);
 
-export default function UserContext({children} : any) {
-  const [user, setUser] = useState(Object);
-  const data = {user, setUser}
+export default function AuthContext({children} : any) {
+  const [user, setUser] = useLocalStorage("user", {})
 
   return (
-    <useUserContext.Provider value={data}>
+    <UserContext.Provider value={{user, setUser}}>
       {children}
-    </useUserContext.Provider>
+    </UserContext.Provider>
   );
 }

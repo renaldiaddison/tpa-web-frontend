@@ -43,3 +43,9 @@ export const ResetPassword = gql`
     resetPassword(email: $email, newPassword: $newPassword)
   }
 `;
+
+export const UpdateProfilePicture = gql`
+  mutation UpdateProfilePicture($id: ID!, $imageUrl: String!) {
+    updateProfilePicture(id: $id, imageUrl: $imageUrl)
+}
+`

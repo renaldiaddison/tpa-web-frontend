@@ -1,6 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import AuthContext from "./lib/UserContext";
 import UserContext from "./lib/UserContext";
 import ProtectedRoute, { UnprotectedRoute } from "./middleware/Middleware";
 import AccountVerificationPage from "./pages/AccountVerificationPage";
@@ -8,6 +9,7 @@ import ErrorPage from "./pages/ErrorPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import ProfilePage from "./pages/ProfilePage";
 import RegisterPage from "./pages/RegisterPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 
@@ -29,9 +31,8 @@ const Unprotected = () => {
 
 function App() {
   return (
-    <>
-      {/* <ToastContainer></ToastContainer> */}
-      <Toaster position="bottom-left"/>
+    <AuthContext>
+      <Toaster position="bottom-left" />
       <Routes>
         <Route element={<Unprotected />}>
           <Route path="/" element={<LoginPage />}></Route>
@@ -42,12 +43,13 @@ function App() {
         </Route>
         <Route element={<Protected />}>
           <Route path="/home" element={<HomePage />}></Route>
+          <Route path="/profile" element={<ProfilePage />}></Route>
         </Route>
         {/* <Route path="/PageNotFound" element={<ErrorPage errorCode ="404" errorDefinition = "Page Not Found"></ErrorPage>}></Route>
         <Route path="*" element={<Navigate to="/PageNotFound"></Navigate>}></Route> */}
-        <Route path="*" element={<ErrorPage errorCode ="404" errorDefinition = "Page Not Found"></ErrorPage>}></Route>
+        <Route path="*" element={<ErrorPage errorCode="404" errorDefinition="Page Not Found"></ErrorPage>}></Route>
       </Routes>
-    </>
+    </AuthContext>
   );
 }
 
