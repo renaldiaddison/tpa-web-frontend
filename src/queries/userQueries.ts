@@ -32,8 +32,30 @@ export const ActivateAccount = gql`
 
 export const GetAllUsers = gql`
   query GetAllUsers {
-    users {
+    getAllUsers {
       id
+    }
+  }
+`;
+
+export const GetUserById = gql`
+  query GetUserById($id: String!) {
+    getUserById(id: $id) {
+      id,
+      email,
+      firstName,
+      lastName,
+      additionalName,
+      is_active,
+      profile_picture,
+      background_picture,
+      headline,
+      about,
+      location,
+      profile_views,
+      followed_user,
+      connected_user,
+      request_connect,
     }
   }
 `;
@@ -47,5 +69,5 @@ export const ResetPassword = gql`
 export const UpdateProfilePicture = gql`
   mutation UpdateProfilePicture($id: ID!, $imageUrl: String!) {
     updateProfilePicture(id: $id, imageUrl: $imageUrl)
-}
-`
+  }
+`;

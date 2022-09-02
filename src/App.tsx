@@ -43,7 +43,7 @@ function App() {
         </Route>
         <Route element={<Protected />}>
           <Route path="/home" element={<HomePage />}></Route>
-          <Route path="/profile" element={<ProfilePage />}></Route>
+          <Route path="/profile/:id" element={<ProfilePage />}></Route>
         </Route>
         {/* <Route path="/PageNotFound" element={<ErrorPage errorCode ="404" errorDefinition = "Page Not Found"></ErrorPage>}></Route>
         <Route path="*" element={<Navigate to="/PageNotFound"></Navigate>}></Route> */}

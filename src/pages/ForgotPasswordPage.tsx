@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../components/Logo";
-import { CreateAndSendResetLink } from "../queries/forgotPasswordLinkQueries";
+import { CreateAndSendResetLink } from "../queries/ForgotPasswordLinkQueries";
 import { toastError, toastSuccess } from "../script/Toast";
 
 const ForgotPasswordPage = () => {

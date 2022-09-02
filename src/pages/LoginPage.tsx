@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../hooks/LocalStorage";
-import { Login } from "../queries/userQueries";
+import { Login } from "../queries/UserQueries";
 import "../styles/css-library.scss";
 import Logo from "../components/Logo";
 import { toastError, toastSuccess } from "../script/Toast";

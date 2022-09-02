@@ -2,8 +2,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Logo from "../components/Logo";
-import { GetResetLink } from "../queries/forgotPasswordLinkQueries";
-import { ResetPassword } from "../queries/userQueries";
+import { GetResetLink } from "../queries/ForgotPasswordLinkQueries";
+import { ResetPassword } from "../queries/UserQueries";
 import { toastError, toastSuccess } from "../script/Toast";
 import ErrorPage from "./ErrorPage";
 

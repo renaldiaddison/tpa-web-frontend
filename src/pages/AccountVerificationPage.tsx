@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { GetLink } from "../queries/activationLinkQueries";
-import { ActivateAccount, GetAllUsers } from "../queries/userQueries";
+import { GetLink } from "../queries/ActivationLinkQueries";
+import { ActivateAccount, GetAllUsers } from "../queries/UserQueries";
 import ErrorPage from "./ErrorPage";
 
 const AccountVerificationPage = () => {

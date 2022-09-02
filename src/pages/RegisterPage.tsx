@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../components/Logo";
-import { Register } from "../queries/userQueries";
+import { Register } from "../queries/UserQueries";
 import { toastError, toastSuccess } from "../script/Toast";
 
 const RegisterPage = () => {
