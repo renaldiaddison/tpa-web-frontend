@@ -10,13 +10,14 @@ import { useEffect, useState, useContext } from 'react';
 import { UserContext } from "../lib/UserContext";
 
 const Navbar = () => {
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser, token, setToken } = useContext(UserContext)
   const navigate = useNavigate()
 
   const handleLogOut = (e: any) => {
     e.preventDefault();
     if (Object.keys(user).length !== 0) {
       setUser({})
+      setToken({})
     }
 
     navigate("/")
@@ -30,9 +31,13 @@ const Navbar = () => {
     }
   }
 
+  const refresh = () => {
+    window.location.reload()
+  }
+
   return (
     <div className='white-bg w-screen navbar'>
-      <BsLinkedin className='navbar-logo'></BsLinkedin>
+      <BsLinkedin className='navbar-logo cursor-pointer' onClick={refresh}></BsLinkedin>
       <input type="text" className='searchbar white-bg' placeholder='Search' />
       <div className='navbar-menu-container mb-5'>
         <NavLink to="/home" className={handleActivePage}>
@@ -55,9 +60,9 @@ const Navbar = () => {
           <IoMdNotifications className='navbar-icon'></IoMdNotifications>
           <h6 className='item-label'>Notifications</h6>
         </NavLink>
-        <NavLink to='/profile' className={handleActivePage}>
-          <img src={user?.profile_picture} className='navbar-icon profile-img'></img>
-          <h6 className='item-label'>{"Hello, " + user?.name}</h6>
+        <NavLink to={'/profile/' + user?.id} className={handleActivePage}>
+          <img src={user?.profile_picture} className='navbar-icon profile-img cover'></img>
+          <h6 className='item-label'>{"Hello, " + user?.firstName}</h6>
         </NavLink>
         <div className="navbar-items cursor-pointer" onClick={handleLogOut}>
         <BiLogOut className="navbar-icon"></BiLogOut>

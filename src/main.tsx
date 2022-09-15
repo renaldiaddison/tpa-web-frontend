@@ -7,16 +7,12 @@ import {
   ApolloProvider,
   gql,
 } from "@apollo/client";
-
-const client = new ApolloClient({
-  uri: "http://localhost:8080/query",
-  cache: new InMemoryCache(),
-});
+import AuthContext from "./lib/UserContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <ApolloProvider client={client}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </ApolloProvider>
+  <AuthContext>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+  </AuthContext>
 );

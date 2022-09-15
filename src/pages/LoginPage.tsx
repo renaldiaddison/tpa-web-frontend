@@ -5,13 +5,13 @@ import { Login } from "../queries/UserQueries";
 import "../styles/css-library.scss";
 import Logo from "../components/Logo";
 import { toastError, toastSuccess } from "../script/Toast";
-import { useContext } from 'react';
-import { UserContext } from '../lib/UserContext';
+import { useContext } from "react";
+import { UserContext } from "../lib/UserContext";
 
 const LoginPage = () => {
   const [loginUser] = useMutation(Login);
   const navigate = useNavigate();
-  const {user, setUser} = useContext(UserContext);
+  const { user, setUser, token, setToken } = useContext(UserContext);
 
   const handleLogin = (e: any) => {
     e.preventDefault();
@@ -36,9 +36,12 @@ const LoginPage = () => {
       })
         .then((x) => {
           const loginData = x.data.login;
-          setUser(loginData);
-          toastSuccess("Success: Logged in as " + loginData.name)
+          console.log(x.data.login)
+          setUser(loginData.user);
+          setToken(loginData.token);
           navigate("/home");
+          toastSuccess("Success: Logged in as " + loginData.user.firstName + " " + loginData.user.lastName);
+
         })
         .catch((err) => {
           toastError(String(err));
