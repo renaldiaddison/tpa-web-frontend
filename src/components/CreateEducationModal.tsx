@@ -1,12 +1,12 @@
 import { useMutation } from "@apollo/client";
 import React, { useContext } from "react";
-import { UserContext } from "../lib/UserContext";
+import { UserContext, useUserContext } from "../lib/UserContext";
 import { CreateEducation } from "../queries/EducationQueries";
 import { toastError, toastSuccess } from "../script/Toast";
 
-const CreateEducationModal = ({ closeModal, refetch }: any) => {
+const CreateEducationModal = ({ closeModal }: any) => {
   const [createEducation] = useMutation(CreateEducation);
-  const userContext = useContext(UserContext);
+  const UserContext = useUserContext();
 
   const handleCreate = () => {
     const school = (document.getElementById("school") as HTMLInputElement)
@@ -46,7 +46,7 @@ const CreateEducationModal = ({ closeModal, refetch }: any) => {
     } else {
       createEducation({
         variables: {
-          UserID: userContext.user.id,
+          UserID: UserContext.user.id,
           School: school,
           Degree: degree,
           FieldOfStudy: studyField,
@@ -58,7 +58,7 @@ const CreateEducationModal = ({ closeModal, refetch }: any) => {
         },
       })
         .then(() => {
-          refetch();
+          UserContext.refetchUser();
           closeModal(false);
           toastSuccess("Success: Education created");
         })

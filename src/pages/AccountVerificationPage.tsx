@@ -31,8 +31,8 @@ const AccountVerificationPage = () => {
       },
     })
       .then(() => {
-        toast.success("Success: Your account has been activated")
         navigate("/");
+        toast.success("Success: Your account has been activated")
       })
       .catch((err) => {
         console.log("err" + err);

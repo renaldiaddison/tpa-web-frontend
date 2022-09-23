@@ -52,10 +52,82 @@ export const GetUserById = gql`
       headline
       about
       location
-      profile_views
-      followed_user
-      connected_user
-      request_connect
+      Educations {
+        ID
+        UserID
+        School
+        Degree
+        FieldOfStudy
+        StartDate
+        EndDate
+        Grade
+        Activities
+        Description
+      }
+      Experiences {
+        ID
+        UserID
+        Title
+        EmploymentType
+        CompanyName
+        Location
+        Active
+        StartYear
+        EndYear
+        Industry
+        Description
+      }
+      Visits {
+        userId
+        visitId
+      }
+      Follows {
+        userId
+        followId
+      }
+      Connection {
+        id
+        user1 {
+          id
+          headline
+          firstName
+          lastName
+          email
+          profile_picture
+        }
+        user2 {
+          id
+          headline
+          firstName
+          lastName
+          email
+          profile_picture
+        }
+      }
+      ConnectRequest {
+        id
+        fromUser {
+          id
+          headline
+          firstName
+          lastName
+          email
+          profile_picture
+        }
+        toUser {
+          id
+          headline
+          firstName
+          lastName
+          email
+          profile_picture
+        }
+        message
+      }
+      Block {
+        userId
+        blockId
+      }
     }
   }
 `;
@@ -78,18 +150,6 @@ export const UpdateBackgroundPicture = gql`
   }
 `;
 
-export const RequestConnect = gql`
-  mutation RequestConnect($id: String!, $recipientID: String!) {
-    requestConnect(id: $id, recipientID: $recipientID)
-  }
-`;
-
-export const AcceptConnect = gql`
-  mutation AcceptConnect($id: String!, $senderID: String!) {
-    acceptConnect(id: $id, senderID: $senderID)
-  }
-`;
-
 export const Follow = gql`
   mutation Follow($id: String!, $followedID: String!) {
     follow(id: $id, followedID: $followedID)
@@ -102,8 +162,94 @@ export const Unfollow = gql`
   }
 `;
 
-export const IgnoreConnect = gql`
-  mutation IgnoreConnect($id: String!, $senderID: String!) {
-    ignoreConnect(id: $id, senderID: $senderID)
+export const VisitUser = gql`
+  mutation VisitUser($id1: ID!, $id2: ID!) {
+    VisitUser(id1: $id1, id2: $id2)
   }
 `;
+
+export const AddConnect = gql`
+  mutation addConnection($user1ID: ID!, $user2ID: ID!) {
+    addConnection(user1ID: $user1ID, user2ID: $user2ID) {
+      id
+      user1 {
+        id
+        firstName
+        lastName
+        headline
+      }
+      user2 {
+        id
+        firstName
+        lastName
+        headline
+      }
+    }
+  }
+`;
+
+export const AddConnectRequest = gql`
+  mutation addConnectRequest(
+    $fromUserId: ID!
+    $toUserId: ID!
+    $message: String!
+  ) {
+    addConnectRequest(
+      fromUserId: $fromUserId
+      toUserId: $toUserId
+      message: $message
+    ) {
+      id
+      fromUser {
+        id
+        email
+      }
+      toUser {
+        id
+        email
+      }
+    }
+  }
+`;
+
+export const DeleteConnectRequest = gql `
+    mutation deleteConnectRequest($fromUserId:ID! , $toUserId:ID!) {
+        deleteConnectRequest(fromUserId:$fromUserId , toUserId:$toUserId){
+            id
+            fromUser{
+                id
+                email
+                password
+            }
+            toUser{
+                id
+                email
+                password
+            }
+        }
+    }
+`
+
+export const AddBlock = gql`
+  mutation addBlock($userId: ID!, $blockId: ID!) {
+    addBlock(userId: $userId, blockId: $blockId) {
+      userId
+      blockId
+    }
+  }
+`;
+
+export const UserSuggestion = gql`
+    query UserSuggestion($userId:ID!){
+    UserSuggestion(userId:$userId){
+        id
+        firstName
+        lastName
+        headline
+        location
+        profile_picture
+    }
+}
+`
+
+

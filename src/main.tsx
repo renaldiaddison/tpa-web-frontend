@@ -10,9 +10,7 @@ import {
 import AuthContext from "./lib/UserContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <AuthContext>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-  </AuthContext>
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
 );

@@ -2,16 +2,21 @@ import { useMutation } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
+import { useUserContext } from "../lib/UserContext";
 import { DeleteExperience } from "../queries/ExperienceQueries";
 import UpdateExperienceModal from "./UpdateExperienceModal";
 
 const Experience = (parameter: any) => {
   const [deleteExperience] = useMutation(DeleteExperience);
   const [updateModal, setUpdateModal] = useState(false);
+  const UserContext = useUserContext()
+
   const deleteExp = () => {
+    console.log("atai")
+    console.log(parameter.experience.ID)
     deleteExperience({ variables: { id: parameter.experience.ID } }).then(
       () => {
-        parameter.refetch();
+        UserContext.refetchUser();
       }
     );
   };
@@ -21,7 +26,6 @@ const Experience = (parameter: any) => {
       {updateModal && (
         <UpdateExperienceModal
           closeModal={setUpdateModal}
-          refetch={parameter.refetch}
           experience={parameter.experience}
         ></UpdateExperienceModal>
       )}

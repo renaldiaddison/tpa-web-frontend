@@ -1,13 +1,13 @@
 import { useMutation } from "@apollo/client";
 import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
-import { UserContext } from "../lib/UserContext";
+import { UserContext, useUserContext } from "../lib/UserContext";
 import { CreateExperience } from "../queries/ExperienceQueries";
 import { toastError, toastSuccess } from "../script/Toast";
 
-const CreateExperienceModal = ({ closeModal, refetch }: any) => {
+const CreateExperienceModal = ({ closeModal }: any) => {
   const [createExperience] = useMutation(CreateExperience);
-  const userContext = useContext(UserContext);
+  const UserContext = useUserContext();
   const [activeJob, setActiveJob] = useState(false);
 
   const handleCreate = () => {
@@ -51,7 +51,7 @@ const CreateExperienceModal = ({ closeModal, refetch }: any) => {
     } else {
       createExperience({
         variables: {
-          UserID: userContext.user.id,
+          UserID: UserContext.user.id,
           Title: title,
           EmploymentType: employmentType,
           CompanyName: companyName,
@@ -64,7 +64,7 @@ const CreateExperienceModal = ({ closeModal, refetch }: any) => {
         },
       })
         .then(() => {
-          refetch();
+          UserContext.refetchUser();
           closeModal(false);
           toastSuccess("Success: Experience created");
         })

@@ -111,7 +111,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 10px;
+  margin: 12px;
   width: 15px;
   height: 15px;
   padding: 10px;
@@ -153,4 +153,8 @@
   right: 0;
   color: black;
   background-color: transparent;
+}
+.logo {
+  fill: black;
+  scale: 130%;
 }

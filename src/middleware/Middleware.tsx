@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { useLocalStorage } from "../hooks/LocalStorage";
-import { useUserContext } from "../lib/UserContext";
 
 export default function ProtectedRoute({ children }: any) {
-  const [user, setUser] = useLocalStorage("user", {});
+  const [token, setToken] = useLocalStorage("token", "");
 
-  if (Object.keys(user).length === 0) {
+  if (token === "") {
     return <Navigate to="/" />;
   }
 
@@ -14,9 +13,9 @@ export default function ProtectedRoute({ children }: any) {
 }
 
 export function UnprotectedRoute({ children }: any) {
-  const [user, setUser] = useLocalStorage("user", {});
+  const [token, setToken] = useLocalStorage("token", "");
 
-  if (Object.keys(user).length !== 0) {
+  if (token !== "") {
     return <Navigate to="/home" />;
   }
 

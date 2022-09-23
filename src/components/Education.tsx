@@ -2,17 +2,19 @@ import { useMutation } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
+import { useUserContext } from "../lib/UserContext";
 import { DeleteEducation } from "../queries/EducationQueries";
 import UpdateEducationModal from "./UpdateEducationModal";
 
 const Education = (parameter: any) => {
   const [deleteEducation] = useMutation(DeleteEducation);
   const [updateModal, setUpdateModal] = useState(false);
+  const UserContext = useUserContext()
 
   const deleteEdu = () => {
     console.log(parameter.education.ID);
     deleteEducation({ variables: { id: parameter.education.ID } }).then(() => {
-      parameter.refetch();
+      UserContext.refetchUser();
     });
   };
 
