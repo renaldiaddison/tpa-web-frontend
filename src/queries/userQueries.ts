@@ -49,7 +49,6 @@ export const GetUserById = gql`
       is_active
       profile_picture
       background_picture
-      headline
       about
       location
       Educations {
@@ -89,7 +88,6 @@ export const GetUserById = gql`
         id
         user1 {
           id
-          headline
           firstName
           lastName
           email
@@ -97,7 +95,6 @@ export const GetUserById = gql`
         }
         user2 {
           id
-          headline
           firstName
           lastName
           email
@@ -108,7 +105,6 @@ export const GetUserById = gql`
         id
         fromUser {
           id
-          headline
           firstName
           lastName
           email
@@ -116,13 +112,11 @@ export const GetUserById = gql`
         }
         toUser {
           id
-          headline
           firstName
           lastName
           email
           profile_picture
         }
-        message
       }
       Block {
         userId
@@ -150,55 +144,45 @@ export const UpdateBackgroundPicture = gql`
   }
 `;
 
-export const Follow = gql`
-  mutation Follow($id: String!, $followedID: String!) {
-    follow(id: $id, followedID: $followedID)
+export const FollowUser = gql`
+  mutation FollowUser($id1: ID!, $id2: ID!) {
+    followUser(id1: $id1, id2: $id2)
   }
 `;
 
-export const Unfollow = gql`
-  mutation Unfollow($id: String!, $unfollowedID: String!) {
-    unfollow(id: $id, unfollowedID: $unfollowedID)
+export const UnFollowUser = gql`
+  mutation UnFollowUser($id1: ID!, $id2: ID!) {
+    unFollowUser(id1: $id1, id2: $id2)
   }
 `;
 
 export const VisitUser = gql`
   mutation VisitUser($id1: ID!, $id2: ID!) {
-    VisitUser(id1: $id1, id2: $id2)
+    visitUser(id1: $id1, id2: $id2)
   }
 `;
 
 export const AddConnect = gql`
-  mutation addConnection($user1ID: ID!, $user2ID: ID!) {
+  mutation AddConnection($user1ID: ID!, $user2ID: ID!) {
     addConnection(user1ID: $user1ID, user2ID: $user2ID) {
       id
       user1 {
         id
         firstName
         lastName
-        headline
       }
       user2 {
         id
         firstName
         lastName
-        headline
       }
     }
   }
 `;
 
 export const AddConnectRequest = gql`
-  mutation addConnectRequest(
-    $fromUserId: ID!
-    $toUserId: ID!
-    $message: String!
-  ) {
-    addConnectRequest(
-      fromUserId: $fromUserId
-      toUserId: $toUserId
-      message: $message
-    ) {
+  mutation AddConnectRequest($fromUserId: ID!, $toUserId: ID!) {
+    addConnectRequest(fromUserId: $fromUserId, toUserId: $toUserId) {
       id
       fromUser {
         id
@@ -212,26 +196,24 @@ export const AddConnectRequest = gql`
   }
 `;
 
-export const DeleteConnectRequest = gql `
-    mutation deleteConnectRequest($fromUserId:ID! , $toUserId:ID!) {
-        deleteConnectRequest(fromUserId:$fromUserId , toUserId:$toUserId){
-            id
-            fromUser{
-                id
-                email
-                password
-            }
-            toUser{
-                id
-                email
-                password
-            }
-        }
+export const DeleteConnectRequest = gql`
+  mutation DeleteConnectRequest($fromUserId: ID!, $toUserId: ID!) {
+    deleteConnectRequest(fromUserId: $fromUserId, toUserId: $toUserId) {
+      id
+      fromUser {
+        id
+        email
+      }
+      toUser {
+        id
+        email
+      }
     }
-`
+  }
+`;
 
 export const AddBlock = gql`
-  mutation addBlock($userId: ID!, $blockId: ID!) {
+  mutation AddBlock($userId: ID!, $blockId: ID!) {
     addBlock(userId: $userId, blockId: $blockId) {
       userId
       blockId
@@ -239,17 +221,54 @@ export const AddBlock = gql`
   }
 `;
 
-export const UserSuggestion = gql`
-    query UserSuggestion($userId:ID!){
-    UserSuggestion(userId:$userId){
-        id
-        firstName
-        lastName
-        headline
-        location
-        profile_picture
+export const DeleteBlock = gql`
+  mutation DeleteBlock($userId: ID!, $blockId: ID!) {
+    deleteBlock(userId: $userId, blockId: $blockId) {
+      userId
+      blockId
     }
-}
-`
+  }
+`;
 
+export const UserSuggestion = gql`
+  query UserSuggestion($userId: ID!) {
+    UserSuggestion(userId: $userId) {
+      id
+      firstName
+      lastName
+      about
+      location
+      additionalName
+      profile_picture
+    }
+  }
+`;
 
+export const UpdateUser = gql`
+  mutation UpdateUser(
+    $id: ID!
+    $firstName: String!
+    $lastName: String!
+    $additionalName: String!
+    $about: String!
+    $location: String!
+  ) {
+    updateUser(
+      id: $id
+      input: {
+        firstName: $firstName
+        lastName: $lastName
+        additionalName: $additionalName
+        about: $about
+        location: $location
+      }
+    ) {
+      id
+      firstName
+      lastName
+      additionalName
+      about
+      location
+    }
+  }
+`;

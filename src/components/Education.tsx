@@ -23,7 +23,6 @@ const Education = (parameter: any) => {
       {updateModal && (
         <UpdateEducationModal
           closeModal={setUpdateModal}
-          refetch={parameter.refetch}
           education={parameter.education}
         ></UpdateEducationModal>
       )}

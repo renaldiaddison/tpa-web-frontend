@@ -10,10 +10,11 @@ import { toastError, toastSuccess } from "../script/Toast";
 
 const UpdateExperienceModal = ({ closeModal, experience }: any) => {
   const [updateExperience] = useMutation(UpdateExperience);
-  const [activeJob, setActiveJob] = useState(false);
-  const UserContext = useUserContext()
+  const [activeJob, setActiveJob] = useState(experience.Active);
+  const [isActive, setIsActive] = useState(experience.Active);
+  const UserContext = useUserContext();
 
-  const handleCreate = () => {
+  const handleUpdate = () => {
     const title = (document.getElementById("title") as HTMLInputElement).value;
     const employmentType = (
       document.getElementById("employmentType") as HTMLInputElement
@@ -54,6 +55,7 @@ const UpdateExperienceModal = ({ closeModal, experience }: any) => {
     } else {
       updateExperience({
         variables: {
+          id: experience.ID,
           UserID: UserContext.user.id,
           Title: title,
           EmploymentType: employmentType,
@@ -100,7 +102,7 @@ const UpdateExperienceModal = ({ closeModal, experience }: any) => {
           </svg>
         </button>
 
-        <h3>Add your Experience</h3>
+        <h3>Update your Experience</h3>
 
         <label htmlFor="title">Title</label>
         <input
@@ -133,6 +135,7 @@ const UpdateExperienceModal = ({ closeModal, experience }: any) => {
           id="companyName"
           placeholder="Ex: Binus"
           className="input-type"
+          defaultValue={experience.CompanyName}
         />
 
         <label htmlFor="location">Location</label>
@@ -142,6 +145,7 @@ const UpdateExperienceModal = ({ closeModal, experience }: any) => {
           id="location"
           placeholder="Ex: Jakarta Indonesia"
           className="input-type"
+          defaultValue={experience.Location}
         />
 
         <div className="flex input-check">
@@ -154,6 +158,7 @@ const UpdateExperienceModal = ({ closeModal, experience }: any) => {
             id="active"
             name="active"
             type="checkbox"
+            defaultChecked={isActive}
           />
           <label htmlFor="active">This is my current active job</label>
         </div>
@@ -163,7 +168,7 @@ const UpdateExperienceModal = ({ closeModal, experience }: any) => {
           type="number"
           name="startYear"
           id="startYear"
-          defaultValue={2020}
+          defaultValue={experience.StartYear}
           className="input-type"
         />
 
@@ -189,8 +194,8 @@ const UpdateExperienceModal = ({ closeModal, experience }: any) => {
               type="number"
               id="endYear"
               name="endYear"
-              defaultValue={2022}
               className="input-type"
+              defaultValue={2022}
             />
           </div>
         )}
@@ -202,6 +207,7 @@ const UpdateExperienceModal = ({ closeModal, experience }: any) => {
           id="industry"
           placeholder="Ex: Retail"
           className="input-type"
+          defaultValue={experience.Industry}
         />
 
         <label htmlFor="description">Description</label>
@@ -211,14 +217,15 @@ const UpdateExperienceModal = ({ closeModal, experience }: any) => {
           id="description"
           placeholder=""
           className="input-type"
+          defaultValue={experience.Description}
         />
 
         <div className="flex">
           <button
             className="cursor-pointer bg-blue-500 border-blue-500 button-style text-white font-bold rounded-lg mt-1"
-            onClick={handleCreate}
+            onClick={handleUpdate}
           >
-            Add
+            Update
           </button>
         </div>
       </div>

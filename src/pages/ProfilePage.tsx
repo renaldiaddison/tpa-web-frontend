@@ -3,15 +3,12 @@ import { useEffect, useState, useContext } from "react";
 import { storage } from "../config/firebase-config";
 import { useMutation, useQuery } from "@apollo/client";
 import {
-  Follow,
   GetUserById,
-  Unfollow,
   UpdateBackgroundPicture,
   UpdateProfilePicture,
   UserSuggestion,
   VisitUser,
 } from "../queries/UserQueries";
-import stringGen from "../script/helper";
 import { UserContext, useUserContext } from "../lib/UserContext";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -34,6 +31,7 @@ const ProfilePage = () => {
   const [eduModal, setEduModal] = useState(false);
   const [expModal, setExpModal] = useState(false);
   const UserContext = useUserContext();
+  let alreadyBlocked: boolean = false;
 
   const {
     loading,
@@ -70,7 +68,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (dataVisit && data) {
-      if (dataVisit.VisitUser.length !== data.getUserById.Visits.length) {
+      if (dataVisit.visitUser.length !== data.getUserById.Visits.length) {
         refetchCurrentUser();
       }
     }
@@ -83,25 +81,27 @@ const ProfilePage = () => {
           id1: UserContext.user.id,
           id2: p.id,
         },
-      }).then((e) => {
-        console.log(e);
-      });
+      }).then((e) => {});
+    }
+  }, []);
+
+  if (loadingVisit) return <p>Loading...</p>;
+  if (errorVisit) return <p>Error...</p>;
+
+  if (loading) return <p>Get user data...</p>;
+  if (error) return <p>Error...</p>;
+
+  UserContext.user.Block.map((blockData: any) => {
+    if (blockData.blockId === data.getUserById.id) {
+      alreadyBlocked = true;
     }
   });
 
   return (
     <div className="white-bg full-screen center-col">
-      {eduModal && (
-        <CreateEducationModal
-          closeModal={setEduModal}
-        />
-      )}
+      {eduModal && <CreateEducationModal closeModal={setEduModal} />}
 
-      {expModal && (
-        <CreateExperienceModal
-          closeModal={setExpModal}
-        />
-      )}
+      {expModal && <CreateExperienceModal closeModal={setExpModal} />}
 
       <Navbar></Navbar>
       <div className="">
@@ -111,64 +111,67 @@ const ProfilePage = () => {
           edit={edit}
         ></UserInformation>
 
-        <div className="sec-profile white-bg">
-          <div className="flex-r w-full justify-between">
-            <p className="text-black text-l bold m-profile">Education</p>
-            {edit === true && (
-              <button
-                className="cursor-pointer button-grey-style bg-white text-white font-bold rounded m-profile border"
-                onClick={() => setEduModal(true)}
-              >
-                <AiOutlinePlus className="logo"></AiOutlinePlus>
-              </button>
-            )}
-          </div>
-          {data.getUserById.Educations.length === 0 && (
-            <>
-              <p className="text-black text-s w-full m-desc">-</p>
-              <div className="m-20px"></div>
-            </>
-          )}
-          {data.getUserById.Educations.map((edu: any) => {
-            return (
-              <Education
-                key={edu.ID}
-                edit={edit}
-                education={edu}
-                // refetch={educationQuery.refetch}
-              ></Education>
-            );
-          })}
-        </div>
-        <div className="sec-profile white-bg">
-          <div className="flex-r w-full justify-between">
-            <p className="text-black text-l bold m-profile">Experiences</p>
-            {edit === true && (
-              <button
-                className="cursor-pointer button-grey-style bg-white text-white font-bold rounded m-profile border"
-                onClick={() => setExpModal(true)}
-              >
-                <AiOutlinePlus className="logo"></AiOutlinePlus>
-              </button>
-            )}
-          </div>
-          {data.getUserById.Experiences.length === 0 && (
-            <>
-              <p className="text-black text-s w-full m-desc">-</p>
-              <div className="m-20px"></div>
-            </>
-          )}
-          {data.getUserById.Experiences.map((exp: any) => {
-            return (
-              <Experience
-                key={exp.ID}
-                // refetch={experienceQuery.refetch}
-                edit={edit}
-                experience={exp}
-              ></Experience>
-            );
-          })}
-        </div>
+        {alreadyBlocked ? null : (
+          <>
+            <div className="sec-profile white-bg">
+              <div className="flex-r w-full justify-between">
+                <p className="text-black text-l bold m-profile">Education</p>
+                {edit === true && (
+                  <button
+                    className="cursor-pointer button-grey-style bg-white text-white font-bold rounded m-profile border"
+                    onClick={() => setEduModal(true)}
+                  >
+                    <AiOutlinePlus className="logo"></AiOutlinePlus>
+                  </button>
+                )}
+              </div>
+              {data.getUserById.Educations.length === 0 && (
+                <>
+                  <p className="text-black text-s w-full m-desc">-</p>
+                  <div className="m-20px"></div>
+                </>
+              )}
+              {data.getUserById.Educations.map((edu: any) => {
+                return (
+                  <Education
+                    key={edu.ID}
+                    edit={edit}
+                    education={edu}
+                  ></Education>
+                );
+              })}
+            </div>
+            <div className="sec-profile white-bg">
+              <div className="flex-r w-full justify-between">
+                <p className="text-black text-l bold m-profile">Experiences</p>
+                {edit === true && (
+                  <button
+                    className="cursor-pointer button-grey-style bg-white text-white font-bold rounded m-profile border"
+                    onClick={() => setExpModal(true)}
+                  >
+                    <AiOutlinePlus className="logo"></AiOutlinePlus>
+                  </button>
+                )}
+              </div>
+              {data.getUserById.Experiences.length === 0 && (
+                <>
+                  <p className="text-black text-s w-full m-desc">-</p>
+                  <div className="m-20px"></div>
+                </>
+              )}
+              {data.getUserById.Experiences.map((exp: any) => {
+                return (
+                  <Experience
+                    key={exp.ID}
+                    edit={edit}
+                    experience={exp}
+                  ></Experience>
+                );
+              })}
+            </div>{" "}
+          </>
+        )}
+
         <div className="sec-profile white-bg">
           <div className="flex-r w-full justify-between">
             <p className="text-black text-l bold m-profile">

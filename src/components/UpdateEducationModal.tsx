@@ -1,12 +1,12 @@
 import { useMutation } from "@apollo/client";
 import React, { useContext } from "react";
-import { UserContext } from "../lib/UserContext";
+import { UserContext, useUserContext } from "../lib/UserContext";
 import { CreateEducation, UpdateEducation } from "../queries/EducationQueries";
 import { toastError, toastSuccess } from "../script/Toast";
 
-const UpdateEducationModal = ({ closeModal, refetch, education }: any) => {
+const UpdateEducationModal = ({ closeModal, education }: any) => {
   const [updateEducation] = useMutation(UpdateEducation);
-  const userContext = useContext(UserContext);
+  const UserContext = useUserContext();
 
   const handleUpdate = () => {
     const school = (document.getElementById("school") as HTMLInputElement)
@@ -47,7 +47,7 @@ const UpdateEducationModal = ({ closeModal, refetch, education }: any) => {
       updateEducation({
         variables: {
           id: education.ID,
-          UserID: userContext.user.id,
+          UserID: UserContext.user.id,
           School: school,
           Degree: degree,
           FieldOfStudy: studyField,
@@ -59,7 +59,7 @@ const UpdateEducationModal = ({ closeModal, refetch, education }: any) => {
         },
       })
         .then(() => {
-          refetch();
+          UserContext.refetchUser()
           closeModal(false);
           toastSuccess("Success: Education updated");
         })
@@ -91,7 +91,7 @@ const UpdateEducationModal = ({ closeModal, refetch, education }: any) => {
           </svg>
         </button>
 
-        <h3>Add your education</h3>
+        <h3>Update your education</h3>
         <label htmlFor="school">School</label>
         <input
           type="text"

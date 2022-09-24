@@ -1,15 +1,20 @@
-import React from 'react'
+import React from "react";
+import UserSuggestionCard from "./UserSuggestionCard";
 
-const UserSuggestionProfile = ({ userSuggestionData } : any) => {
-    return (
-        <>
-            {
-                userSuggestionData.map((userSuggestionData : any) => {
-                    return (<UserSuggestionProfile userSuggestionData={userSuggestionData} />)
-                })
-            }
-        </>
-    )
-}
+const UserSuggestionProfile = ({ userSuggestionData }: any) => {
+  console.log(userSuggestionData);
+  return (
+    <div className=""> 
+      {userSuggestionData.map((suggestionData: any) => {
+        return (
+          <UserSuggestionCard
+            key={suggestionData.id}
+            userSuggestionData={suggestionData}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
-export default UserSuggestionProfile
+export default UserSuggestionProfile;
