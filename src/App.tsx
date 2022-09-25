@@ -20,6 +20,7 @@ import {
 } from "@apollo/client";
 import AuthContext, { UserContext, useUserContext } from "./lib/UserContext";
 import { useLocalStorage } from "./hooks/LocalStorage";
+import JobPage from "./pages/JobPage";
 
 const Protected = () => {
   return (
@@ -42,7 +43,7 @@ const Unprotected = () => {
 function App() {
   const main_url = "http://localhost:8080";
   const url = main_url + "/query";
-  const [ token, setToken ] = useLocalStorage("token", "");
+  const [token, setToken] = useLocalStorage("token", "");
   const authLink = new ApolloLink((operation: any, forward: any) => {
     if (token !== undefined && Object.keys(token).length !== 0) {
       operation.setContext({
@@ -65,40 +66,39 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-        <Toaster position="bottom-left" />
-        <Routes>
-          <Route element={<Unprotected />}>
-            <Route path="/" element={<LoginPage />}></Route>
-            <Route path="/register" element={<RegisterPage />}></Route>
-            <Route
-              path="/activate-account/:id"
-              element={<AccountVerificationPage />}
-            ></Route>
-            <Route
-              path="/forgot-password"
-              element={<ForgotPasswordPage />}
-            ></Route>
-            <Route
-              path="/reset-password/:id"
-              element={<ResetPasswordPage />}
-            ></Route>
-          </Route>
-          <Route element={<Protected />}>
-            <Route path="/home" element={<HomePage />}></Route>
-            <Route path="/profile/:id" element={<ProfilePage />}></Route>
-          </Route>
-          {/* <Route path="/PageNotFound" element={<ErrorPage errorCode ="404" errorDefinition = "Page Not Found"></ErrorPage>}></Route>
-        <Route path="*" element={<Navigate to="/PageNotFound"></Navigate>}></Route> */}
+      <Toaster position="bottom-left" />
+      <Routes>
+        <Route element={<Unprotected />}>
+          <Route path="/" element={<LoginPage />}></Route>
+          <Route path="/register" element={<RegisterPage />}></Route>
           <Route
-            path="*"
-            element={
-              <ErrorPage
-                errorCode="404"
-                errorDefinition="Page Not Found"
-              ></ErrorPage>
-            }
+            path="/activate-account/:id"
+            element={<AccountVerificationPage />}
           ></Route>
-        </Routes>
+          <Route
+            path="/forgot-password"
+            element={<ForgotPasswordPage />}
+          ></Route>
+          <Route
+            path="/reset-password/:id"
+            element={<ResetPasswordPage />}
+          ></Route>
+        </Route>
+        <Route element={<Protected />}>
+          <Route path="/home" element={<HomePage />}></Route>
+          <Route path="/profile/:id" element={<ProfilePage />}></Route>
+          <Route path="/job" element={<JobPage />}></Route>
+        </Route>
+        <Route
+          path="*"
+          element={
+            <ErrorPage
+              errorCode="404"
+              errorDefinition="Page Not Found"
+            ></ErrorPage>
+          }
+        ></Route>
+      </Routes>
     </ApolloProvider>
   );
 }

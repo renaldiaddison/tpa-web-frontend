@@ -240,6 +240,23 @@ export const UserSuggestion = gql`
       location
       additionalName
       profile_picture
+      ConnectRequest {
+        id
+        fromUser {
+          id
+          firstName
+          lastName
+          email
+          profile_picture
+        }
+        toUser {
+          id
+          firstName
+          lastName
+          email
+          profile_picture
+        }
+      }
     }
   }
 `;

@@ -296,13 +296,12 @@ const UserInformation = ({ currentUser, refetchCurrentUser, edit }: any) => {
   });
 
   UserContext.user.ConnectRequest.map((connectRequestData: any) => {
-    if (connectRequestData.toUser.id === UserContext.user.id) {
+    if (connectRequestData.fromUser.id === UserContext.user.id) {
       giveConnectionStatus = true;
     }
   });
 
   UserContext.user.Follows.map((followData: any) => {
-    console.log(followData.followId, "asd", currentUser.id);
     if (followData.followId === currentUser.id) {
       alreadyFollowed = true;
     }

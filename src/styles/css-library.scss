@@ -66,6 +66,10 @@ body {
   scale: 50%;
 }
 
+.margin-right-max {
+  margin-right: 100px;
+}
+
 .profile-img {
   border-radius: 50%;
 }
@@ -4053,6 +4057,10 @@ mt-10px {
 
 .max-w-fit {
   max-width: fit-content;
+}
+
+.w-fit {
+  width: fit-content;
 }
 
 .max-w-prose {

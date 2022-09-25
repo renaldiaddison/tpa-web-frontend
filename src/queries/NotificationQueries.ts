@@ -28,3 +28,18 @@ export const AddNotification = gql`
     }
   }
 `;
+
+export const Notifications = gql`
+  query Notifications($toUserId: ID!) {
+    userNotification(toUserId: $toUserId) {
+      id
+      message
+      fromUser {
+        id
+        firstName
+        lastName
+        profileImageUrl
+      }
+    }
+  }
+`;

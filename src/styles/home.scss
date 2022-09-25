@@ -1,0 +1,80 @@
+.big-container {
+  align-items: center;
+  justify-content: start;
+}
+
+.sec-profiles {
+  width: 600px;
+  margin: 20px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0px 5px 2px;
+}
+
+.modal-bg {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  overflow-x: hidden;
+  z-index: 10;
+}
+
+.image-post {
+  width: 100%;
+  margin-left: -7px;
+}
+
+.video-post {
+  width: 100%;
+  margin-left: -7px;
+}
+
+
+.add_button {
+  margin-top: 20px;
+  width: 200px;
+  height: 30px;
+}
+
+.picture-profile {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: black 1px solid;
+}
+
+.poster-card-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: white;
+}
+
+.picture-profile2 {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: black 1px solid;
+}
+
+.fill-logo {
+  width: 20px;
+  height: 20px;
+}
+
+.handle-button {
+  width: 50px;
+  height: 30px;
+}

@@ -23,6 +23,7 @@ import Education from "../components/Education";
 import Experience from "../components/Experience";
 import UserInformation from "../components/UserInformation";
 import UserSuggestionProfile from "../components/UserSuggestionProfile";
+import Footer from "../components/Footer";
 
 const ProfilePage = () => {
   const p = useParams();
@@ -184,6 +185,7 @@ const ProfilePage = () => {
             <>
               <UserSuggestionProfile
                 userSuggestionData={dataUserSuggestion.UserSuggestion}
+                refetchUserSuggestion={refetchUserSuggestion}
               />
             </>
           ) : (
@@ -194,6 +196,7 @@ const ProfilePage = () => {
           )}
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 };
