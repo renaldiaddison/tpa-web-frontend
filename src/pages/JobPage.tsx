@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import "../styles/profile.scss";
+import "../styles/css-library.scss";
 import "../styles/job.scss";
 import { Jobs } from "../queries/JobQueries";
 import { useQuery } from "@apollo/client";

@@ -151,9 +151,7 @@ const Post = ({
       if (inputText.match(HashtagRichText1)) {
         const hashtagSubstring = inputText.substring(1, inputText.length);
         addHashtagMutation({ variables: { hashtag: hashtagSubstring } }).then(
-          (e) => {
-            console.log(e);
-          }
+          (e) => {}
         );
       }
     });
@@ -169,7 +167,7 @@ const Post = ({
         },
       })
         .then((e) => {
-          UserContext.userRefetch();
+          UserContext.refetchUser();
           fecthMoreComment({
             updateQuery: (previousResult) => {
               if (!previousResult.postComments) {
@@ -192,12 +190,10 @@ const Post = ({
               createNotification(
                 UserContext.user.id,
                 postData.Sender.id,
-                "Commented on your post"
+                "Commented On Your Post"
               );
             })
-            .catch((e) => {
-              console.log(e);
-            });
+            .catch((e) => {});
           setComment("");
         })
         .catch((e) => {
@@ -252,19 +248,15 @@ const Post = ({
         }
       },
     })
-      .then((e) => {
-        console.log(e);
-      })
+      .then((e) => {})
       .catch((e) => {
         setHasMore(false);
-        console.log(e);
       });
   };
 
   const texts = postData.text?.split(" ");
 
   const pressHandleEnter = (event: any, postId: string) => {
-    console.log(event.key);
     if (event.key === "Enter") {
       setComment("");
       handleCommentMutation(event, postId);
@@ -322,14 +314,8 @@ const Post = ({
           message: message,
         },
       })
-        .then((e) => {
-          console.log(e);
-        })
-        .catch((e) => {
-          toastError(e);
-        });
-    } else {
-      console.log("Cannot send notification to yourself");
+        .then((e) => {})
+        .catch((e) => {});
     }
   };
 
@@ -341,7 +327,7 @@ const Post = ({
   if (errorComment) <p>Error</p>;
 
   return (
-    <div className="mb-20px">
+    <div className="mb-6">
       {/* {
                 shareModal === true && <SharePostModal postData={postData} setShareModal={setShareModal} />
             } */}
@@ -360,8 +346,8 @@ const Post = ({
             <div className="">
               <p
                 className="cursor-pointer"
-                onMouseEnter={() => setModalProfilePoster(true)}
-                onMouseLeave={() => setModalProfilePoster(false)}
+                // onMouseEnter={() => setModalProfilePoster(true)}
+                // onMouseLeave={() => setModalProfilePoster(false)}
                 onClick={handleGoToProfile}
               >
                 {postData.Sender.firstName} {postData.Sender.lastName}
@@ -380,11 +366,15 @@ const Post = ({
               postData.videoUrl === "" ? null : postData.photoUrl !== "" ? (
                 <img className="image-post" src={postData.photoUrl}></img>
               ) : (
-                <video className="video-post"  src={postData.videoUrl} controls />
+                <video
+                  className="video-post"
+                  src={postData.videoUrl}
+                  controls
+                />
               )}
             </div>
           </div>
-          <div className="mb-2">
+          <div className="mb-4">
             <div className="">
               <p>{postData.Likes.length} Likes</p>
               <p>{totalPostComment} Comment</p>
@@ -419,15 +409,20 @@ const Post = ({
           </div>
           <div className="">
             <div style={{ display: `${displayInputComment}` }} className="">
-              <div className="">
-                <img src={UserContext.user.profile_picture}></img>
+              <div className="flex comment-container">
+                <img
+                  src={UserContext.user.profile_picture}
+                  className="picture-profile cover mr-2"
+                ></img>
                 <MentionsInput
+                  className="mr-5"
                   onKeyPress={(event: any) =>
                     pressHandleEnter(event, postData.id)
                   }
                   value={comment}
                   style={{
                     width: "100%",
+                    maxwidth: "100%",
                     minHeight: "50px",
                     maxHeight: "auto",
                     ...mentionInputPostStyle,
@@ -449,7 +444,7 @@ const Post = ({
               </div>
             </div>
             {displayInputComment === "flex" &&
-              dataComment.postComments?.map((commentTypeData: any) => {
+              dataComment?.postComments?.map((commentTypeData: any) => {
                 return (
                   <PostComment
                     key={commentTypeData.id}
@@ -463,8 +458,11 @@ const Post = ({
                 );
               })}
             {displayInputComment === "flex" && hasMore == true && (
-              <div className="">
-                <button className="" onClick={handleFetchMore}>
+              <div className="mb-3">
+                <button
+                  className="cursor-pointer bg-blue-500 border-blue-500 button-style text-white font-bold rounded-lg"
+                  onClick={handleFetchMore}
+                >
                   Load more comment
                 </button>
               </div>

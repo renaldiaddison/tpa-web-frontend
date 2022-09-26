@@ -38,7 +38,7 @@ export const Notifications = gql`
         id
         firstName
         lastName
-        profileImageUrl
+        profile_picture
       }
     }
   }

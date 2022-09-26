@@ -11,8 +11,10 @@ import {
 const RichTextTemplateHome = ({ texts }: { texts: string[] }) => {
   return (
     <>
-      {texts.map((text) => {
+      {texts.map((text, index) => {
         if (text.match(HashtagRichText2)) {
+          console.log("match hastag2");
+
           let firstIndexHastag = text.indexOf("[");
           let lastIndexHastag = text.indexOf("]");
           let hastagSubString = text.substring(
@@ -22,23 +24,27 @@ const RichTextTemplateHome = ({ texts }: { texts: string[] }) => {
 
           let hastagUrl = text.substring(firstIndexHastag + 2, lastIndexHastag);
           return (
-            <Link className="richText-a" to={`/search/tags/${hastagUrl}`}>
-              <p> {hastagSubString} &nbsp;</p>
+            <Link className="" to={`/search/tags/${hastagUrl}`} key={index}>
+              {hastagSubString}{" "}
             </Link>
           );
         } else if (text.match(HashtagRichText1)) {
           let hastagUrl = text.substring(1, text.length);
           return (
-            <Link className="richText-a" to={`/search/tags/${hastagUrl}`}>
-              <p>{text} &nbsp;</p>
+            <Link className="" to={`/search/tags/${hastagUrl}`} key={index}>
+              {text}{" "}
             </Link>
           );
         } else if (text.match(URLRichText)) {
-          return <a href={text}>{text}</a>;
+          return (
+            <a href={text} key={index}>
+              {text}{" "}
+            </a>
+          );
         } else if (text.match(MentionRichText)) {
-          return <MentionHover text={text} />;
+          return <MentionHover text={text} key={index} />;
         } else {
-          return <span>{text} &nbsp;</span>;
+          return <span key={index}>{text} </span>;
         }
       })}
     </>

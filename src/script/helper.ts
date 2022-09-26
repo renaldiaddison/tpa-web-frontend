@@ -74,7 +74,6 @@ export const mentionInputCommentStyle = {
 
   "&multiLine": {
     control: {
-      fontFamily: "Roboto",
       minHeight: "auto",
     },
     highlighter: {

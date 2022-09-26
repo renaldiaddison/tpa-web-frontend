@@ -12,7 +12,6 @@ export const Posts = gql`
         firstName
         lastName
         profile_picture
-        about
         Follows {
           userId
           followId

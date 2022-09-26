@@ -44,42 +44,45 @@ const HomePage = () => {
   if (loading || loadingHashtag) return <p>loading</p>;
   if (error || errorHashtag) return <p>error</p>;
 
-  // window.onscroll = () => {
-  //   if (window.innerHeight + window.scrollY > document.body.offsetHeight) {
-  //     fetchMore({
-  //       variables: { Offset: data.Posts.length },
-  //       updateQuery: (previousResult, { fetchMoreResult }) => {
-  //         let check = false;
+  window.onscroll = () => {
+    if (window.innerHeight + window.scrollY > document.body.offsetHeight) {
+      fetchMore({
+        variables: { Offset: data.Posts.length },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          let check = false;
 
-  //         for (let index = 0; index < previousResult.Posts.length; index++) {
-  //           for (
-  //             let index2 = 0;
-  //             index2 < fetchMoreResult.Posts.length;
-  //             index2++
-  //           ) {
-  //             if (
-  //               previousResult.Posts[index].id ===
-  //               fetchMoreResult.Posts[index2].id
-  //             ) {
-  //               check = true;
-  //             }
-  //           }
-  //         }
+          for (let index = 0; index < previousResult.Posts.length; index++) {
+            for (
+              let index2 = 0;
+              index2 < fetchMoreResult.Posts.length;
+              index2++
+            ) {
+              if (
+                previousResult.Posts[index].id ===
+                fetchMoreResult.Posts[index2].id
+              ) {
+                check = true;
+              }
+            }
+          }
 
-  //         if (check === true) {
-  //           return previousResult;
-  //         } else {
-  //           return {
-  //             Posts: [...previousResult.Posts, ...fetchMoreResult.Posts],
-  //           };
-  //         }
-  //       },
-  //     });
-  //   }
-  // };
+          if (check === true) {
+            return previousResult;
+          } else {
+            return {
+              Posts: [...previousResult.Posts, ...fetchMoreResult.Posts],
+            };
+          }
+        },
+      });
+      console.log(window.innerHeight);
+      console.log(window.scrollY);
+      console.log(document.body.offsetHeight);
+    }
+  };
 
   return (
-    <div className="white-bg full-screen center-col">
+    <div className="white-bg center-col">
       <Navbar></Navbar>
       {postModal && (
         <CreatePostModal
@@ -113,7 +116,7 @@ const HomePage = () => {
                 <Post
                   initialValueTotalComment={initialValueTotalComment}
                   dataHashtags={dataHashtag.Hashtags}
-                  refechHashtag={refetchHashtag}
+                  refetchHashtag={refetchHashtag}
                   postData={post}
                   refectPostData={refetchPost}
                   key={post.id}

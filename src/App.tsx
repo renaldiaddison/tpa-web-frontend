@@ -21,6 +21,8 @@ import {
 import AuthContext, { UserContext, useUserContext } from "./lib/UserContext";
 import { useLocalStorage } from "./hooks/LocalStorage";
 import JobPage from "./pages/JobPage";
+import MyNetworkPage from "./pages/MyNetworkPage";
+import NotificationPage from "./pages/NotificationPage";
 
 const Protected = () => {
   return (
@@ -88,6 +90,8 @@ function App() {
           <Route path="/home" element={<HomePage />}></Route>
           <Route path="/profile/:id" element={<ProfilePage />}></Route>
           <Route path="/job" element={<JobPage />}></Route>
+          <Route path="/my-network" element={<MyNetworkPage />}></Route>
+          <Route path="/notification" element={<NotificationPage />}></Route>
         </Route>
         <Route
           path="*"

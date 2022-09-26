@@ -7,7 +7,10 @@ import {
   useQuery,
 } from "@apollo/client";
 import React, { useEffect, useState } from "react";
+import { AiFillLike, AiOutlineLike } from "react-icons/ai";
+import { BsFillReplyFill } from "react-icons/bs";
 import { Mention, MentionsInput, SuggestionDataItem } from "react-mentions";
+import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../lib/UserContext";
 import { HashtagRichText1 } from "../model/RichText";
 import { AddHashtag } from "../queries/HashtagQueries";
@@ -37,7 +40,14 @@ const PostComment = ({
   const [likeCommentMutation] = useMutation(AddLikeComment);
   const [unLikeCommentMutation] = useMutation(DeleteLikeComment);
   const [displayInputComment, setDisplayInputComment] = useState("none");
-  const { loading, error, data, refetch } = useQuery(PostComments, {
+  const navigate = useNavigate();
+
+  const {
+    loading: loadingComment,
+    error: errorComment,
+    data: dataComment,
+    refetch: refetchComment,
+  } = useQuery(PostComments, {
     variables: { id: commentId },
   });
 
@@ -66,21 +76,24 @@ const PostComment = ({
 
   let checkUserLikes: boolean = false;
 
-  const likeHanlder = () => {
+  if (loadingComment || loadingReply) return <p>loading...</p>;
+  if (errorComment || errorReply) return <p>Error</p>;
+
+  const likeHandler = () => {
     likeCommentMutation({
       variables: {
-        commentId: data.postComment?.id,
-        userId: UserContext.User.id,
+        commentId: dataComment.postComment?.id,
+        userId: UserContext.user.id,
       },
     })
       .then((e) => {
-        refetch()
+        refetchComment()
           .then((e) => {
             toastSuccess("Success Like Comment");
             createNotification(
-              UserContext.User.id,
-              data.PostComment?.Commenter.id,
-              "Like your comment"
+              UserContext.user.id,
+              dataComment.postComment.Commenter.id,
+              "Like Your Comment"
             );
           })
           .catch((e) => {
@@ -92,15 +105,15 @@ const PostComment = ({
       });
   };
 
-  const unlikehanlder = () => {
+  const unlikeHandler = () => {
     unLikeCommentMutation({
       variables: {
-        commentId: data.postComment?.id,
-        userId: UserContext.User.id,
+        commentId: dataComment.postComment?.id,
+        userId: UserContext.user.id,
       },
     })
       .then((e) => {
-        refetch()
+        refetchComment()
           .then((e) => {
             toastSuccess("Success Unlike Comment");
           })
@@ -113,8 +126,8 @@ const PostComment = ({
       });
   };
 
-  data.postComment.Likes.map((dataLikes: any) => {
-    if (dataLikes.User.id === UserContext.User.id) {
+  dataComment.postComment.Likes.map((dataLikes: any) => {
+    if (dataLikes.User.id === UserContext.user.id) {
       checkUserLikes = true;
     }
   });
@@ -130,7 +143,7 @@ const PostComment = ({
         variables: {
           Limit: limit,
           Offset: offset,
-          commentId: data.postComment.id,
+          commentId: dataComment.postComment.id,
         },
       })
         .then((e) => {
@@ -169,17 +182,15 @@ const PostComment = ({
       addReplyMutation({
         variables: {
           postId: postId,
-          commenterId: UserContext.User.id,
+          commenterId: UserContext.user.id,
           comment: commentInput,
           replyToCommentId: commentId,
         },
       })
         .then((e) => {
-          UserContext.userRefetch();
+          UserContext.refetchUser();
           fecthMoreReply({
             updateQuery: (previousResult) => {
-              console.log(previousResult);
-              console.log(e.data);
               if (!previousResult.repliedToComments) {
                 return { repliedToComments: [e.data.addReply] };
               } else {
@@ -194,14 +205,13 @@ const PostComment = ({
           })
             .then((e) => {
               toastSuccess("Success add reply");
-              console.log(e.data);
               setTotalCommentReply(totalCommentReply + 1);
               setTotalComment(totalComment + 1);
               refetchHashtag();
               createNotification(
-                UserContext.User.id,
-                data.postComment.Commenter.id,
-                "Replied your comment"
+                UserContext.user.id,
+                dataComment.postComment.Commenter.id,
+                "Replied Your Comment"
               );
             })
             .catch((e) => {
@@ -220,8 +230,6 @@ const PostComment = ({
     fecthMoreReply({
       variables: { Offset: dataReply.repliedToComments.length },
       updateQuery: (previousResult, { fetchMoreResult }) => {
-        console.log(previousResult);
-        console.log(fetchMoreResult);
         let check = false;
         if (!fetchMoreResult.repliedToComments) return previousResult;
         if (
@@ -272,19 +280,19 @@ const PostComment = ({
       });
   };
 
-  const texts = data.postComment.comment.split(" ");
+  const texts = dataComment.postComment.comment.split(" ");
 
   const mentionDatas: SuggestionDataItem[] = [];
-  UserContext.User.Connections.map((dataMention: any) => {
+  UserContext.user.Connection.map((dataMention: any) => {
     let mentionData: SuggestionDataItem = { id: "", display: "" };
     let at: string = "@";
-    if (dataMention.user1.id != UserContext.User.id) {
+    if (dataMention.user1.id != UserContext.user.id) {
       mentionData.id = dataMention.user1.id;
       mentionData.display = at
         .concat(dataMention.user1.firstName)
         .concat(dataMention.user1.lastName);
       mentionDatas.push(mentionData);
-    } else if (dataMention.user2.id != UserContext.User.id) {
+    } else if (dataMention.user2.id != UserContext.user.id) {
       mentionData.id = dataMention.user2.id;
       mentionData.display = at
         .concat(dataMention.user2.firstName)
@@ -329,81 +337,71 @@ const PostComment = ({
         },
       })
         .then((e) => {
-          console.log(e);
+          // toastSuccess("success");
         })
         .catch((e) => {
-          toastError(e);
+          toastError("err");
         });
     }
   };
 
-  if (loading && loadingReply) return <p>loading...</p>;
-  if (error && errorReply) return <p>Error</p>;
-
+  const handleGoToProfile = () => {
+    navigate(`/profile/${dataComment.postComment.Commenter.id}`);
+  };
   return (
-    <div className="post-comment-container">
-      <div className="post-comment-content-continer">
-        <div className="content-left">
-          {data.postComment.Commenter.profileImageUrl ? (
-            <img
-              src={data.postComment?.Commenter.profileImageUrl}
-              className="profile"
-              alt=""
-            />
-          ) : (
-            <img
-              src="../../src/assets/dummy_avatar.jpg"
-              className="profile"
-              alt=""
-            />
-          )}
+    <div className="">
+      <div className="flex">
+        <div className="mr-2">
+          <img
+            src={dataComment.postComment?.Commenter.profile_picture}
+            className="picture-profile2 cover"
+            alt=""
+          />
         </div>
-        <div className="content-right">
-          <div className="content">
-            <p className="name">
-              {data.postComment?.Commenter.firstName}{" "}
-              {data.postComment?.Commenter.lastName}
+        <div className="w-full comment-content">
+          <div>
+            <p onClick={handleGoToProfile} className="cursor-pointer">
+              {dataComment.postComment?.Commenter.firstName}{" "}
+              {dataComment.postComment?.Commenter.lastName}
             </p>
-            <p className="headline">{data.postComment?.Commenter.headline}</p>
-            <p className="text">
+            <p>
               <RichTextTemplateHome texts={texts} />
             </p>
           </div>
-          <div className="button-comment-container">
+          <div className="flex button-comment">
             {checkUserLikes === false ? (
-              <>
-                <p className="button-text" onClick={likeHanlder}>
-                  Like
+              <div className="flex items-center mr-2">
+                <p className="cursor-pointer" onClick={likeHandler}>
+                  <AiOutlineLike className="fill-logo"></AiOutlineLike>
                 </p>{" "}
-                <p className="text">{data.postComment?.Likes.length} Likes</p>
-              </>
+                <p className="text">{dataComment.postComment?.Likes.length}</p>
+              </div>
             ) : (
-              <>
-                <p className="button-text" onClick={unlikehanlder}>
-                  Unlike
+              <div className="flex items-center mr-2">
+                <p className="cursor-pointer" onClick={unlikeHandler}>
+                  <AiFillLike className="fill-logo"></AiFillLike>
                 </p>{" "}
-                <p className="text">{data.postComment?.Likes.length} Likes</p>
-              </>
+                <p className="text">{dataComment.postComment?.Likes.length}</p>
+              </div>
             )}
-            <p className="button-text" onClick={handleReplyShow}>
-              Reply
-            </p>{" "}
-            <p className="text">{totalCommentReply} Replies</p>
+            <div className="flex items-center">
+              <p className="cursor-pointer" onClick={handleReplyShow}>
+                <BsFillReplyFill className="fill-logo"></BsFillReplyFill>
+              </p>{" "}
+              <p className="text">{totalCommentReply}</p>
+            </div>
           </div>
-          <div className="post-bottom-comment-container">
-            <div
-              style={{ display: `${displayInputComment}` }}
-              className="post-comment-input-container"
-            >
-              <div className="post-comment-input-content">
-                {UserContext.User.profileImageUrl === "" ? (
-                  <img src="../../src/assets/dummy_avatar.jpg" alt="" />
-                ) : (
-                  <img src={UserContext.User.profileImageUrl}></img>
-                )}
+          <div className="">
+            <div style={{ display: `${displayInputComment}` }} className="">
+              <div className="flex comment-container">
+                <img
+                  className="picture-profile2 cover mr-2"
+                  src={UserContext.user.profile_picture}
+                ></img>
                 <MentionsInput
+                  className="mr-5"
                   onKeyPress={(event) =>
-                    pressHandleEnter(event, data.postComment.postId)
+                    pressHandleEnter(event, dataComment.postComment.postId)
                   }
                   value={commentInput}
                   style={{
@@ -412,7 +410,7 @@ const PostComment = ({
                     maxHeight: "auto",
                     ...mentionInputCommentStyle,
                   }}
-                  placeholder="Add a comment..."
+                  placeholder="Add a reply..."
                   onChange={handleComment}
                 >
                   <Mention

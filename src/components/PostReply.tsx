@@ -1,5 +1,8 @@
 import { useMutation, useQuery } from "@apollo/client";
 import React from "react";
+import { AiFillLike, AiOutlineLike } from "react-icons/ai";
+import { BsFillReplyFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../lib/UserContext";
 import { AddNotification } from "../queries/NotificationQueries";
 import {
@@ -15,6 +18,7 @@ const PostReply = ({ replyId }: { replyId: string }) => {
   const [likeCommentMutation] = useMutation(AddLikeComment);
   const [unLikeCommentMutation] = useMutation(DeleteLikeComment);
   const [notificationMutation] = useMutation(AddNotification);
+  const navigate = useNavigate();
 
   const {
     loading,
@@ -25,22 +29,23 @@ const PostReply = ({ replyId }: { replyId: string }) => {
   let checkUserLikes: boolean = false;
 
   if (loading) return <p>loading...</p>;
+  if (error) return <p>Error...</p>;
 
-  const likeHanlder = () => {
+  const likeHandler = () => {
     likeCommentMutation({
       variables: {
         commentId: data.postComment?.id,
-        userId: UserContext.User.id,
+        userId: UserContext.user.id,
       },
     })
       .then((e) => {
         refectReply()
           .then((e) => {
-            toastSuccess("Success Like Comment");
+            toastSuccess("Success Like Reply");
             createNotification(
-              UserContext.User.id,
+              UserContext.user.id,
               data.postComment?.Commenter.id,
-              "Like your comment"
+              "Like Your Reply"
             );
           })
           .catch((e) => {
@@ -52,17 +57,17 @@ const PostReply = ({ replyId }: { replyId: string }) => {
       });
   };
 
-  const unlikehanlder = () => {
+  const unlikeHandler = () => {
     unLikeCommentMutation({
       variables: {
         commentId: data.postComment?.id,
-        userId: UserContext.User.id,
+        userId: UserContext.user.id,
       },
     })
       .then((e) => {
         refectReply()
           .then((e) => {
-            toastSuccess("Success Unlike Comment");
+            toastSuccess("Success Unlike Reply");
           })
           .catch((e) => {
             toastError(e);
@@ -74,7 +79,7 @@ const PostReply = ({ replyId }: { replyId: string }) => {
   };
 
   data.postComment.Likes.map((dataLikes: any) => {
-    if (dataLikes.User.id === UserContext.User.id) {
+    if (dataLikes.User.id === UserContext.user.id) {
       checkUserLikes = true;
     }
   });
@@ -101,53 +106,49 @@ const PostReply = ({ replyId }: { replyId: string }) => {
         });
     }
   };
+
+  const handleGoToProfile = () => {
+    navigate(`/profile/${data.postComment.Commenter.id}`);
+  };
   return (
-    <div className="post-comment-container">
-      <div className="post-comment-content-continer">
-        <div className="content-left">
-          {data.postComment.Commenter.profileImageUrl ? (
-            <img
-              src={data.postComment?.Commenter.profileImageUrl}
-              className="profile"
-              alt=""
-            />
-          ) : (
-            <img
-              src="../../src/assets/dummy_avatar.jpg"
-              className="profile"
-              alt=""
-            />
-          )}
+    <div className="">
+      <div className="flex">
+        <div className="mr-2">
+          <img
+            src={data.postComment?.Commenter.profile_picture}
+            className="picture-profile2 cover"
+            alt=""
+          />
         </div>
-        <div className="content-right">
-          <div className="content">
-            <p className="name">
+        <div className="w-full comment-content">
+          <div className="">
+            <p onClick={handleGoToProfile} className="cursor-pointer">
               {data.postComment?.Commenter.firstName}{" "}
               {data.postComment?.Commenter.lastName}
             </p>
-            <p className="headline">{data.postComment?.Commenter.headline}</p>
-            <p className="text">
+            <p className="">{data.postComment?.Commenter.headline}</p>
+            <p className="">
               <RichTextTemplateHome texts={texts} />
             </p>
           </div>
-          <div className="button-comment-container">
+          <div className="flex button-comment">
             {checkUserLikes === false ? (
-              <>
-                <p className="button-text" onClick={likeHanlder}>
-                  Like
+              <div className="flex items-center mr-2">
+                <p className="cursor-pointer" onClick={likeHandler}>
+                  <AiOutlineLike className="fill-logo"></AiOutlineLike>
                 </p>{" "}
-                <p className="text">{data.postComment?.Likes.length} Likes</p>
-              </>
+                <p className="text">{data.postComment?.Likes.length}</p>
+              </div>
             ) : (
-              <>
-                <p className="button-text" onClick={unlikehanlder}>
-                  Unlike
+              <div className="flex items-center mr-2">
+                <p className="cursor-pointer" onClick={unlikeHandler}>
+                  <AiFillLike className="fill-logo"></AiFillLike>
                 </p>{" "}
-                <p className="text">{data.postComment?.Likes.length} Likes</p>
-              </>
+                <p className="text">{data.postComment?.Likes.length}</p>
+              </div>
             )}
-            <p className="button-text">Reply</p>{" "}
-            <p className="text">{data.postComment?.Replies.length} Replies</p>
+            {/* <p className="">Reply</p>{" "}
+            <p className="">{data.postComment?.Replies.length} Replies</p> */}
           </div>
         </div>
       </div>

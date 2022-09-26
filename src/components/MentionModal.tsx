@@ -7,27 +7,32 @@ const MentionModal = ({ userId }: any) => {
     variables: { id: userId },
   });
 
-  if (loading) <p>Loading</p>;
-  if (error) <p>Error</p>;
+  console.log(userId);
 
-  return (
-    <div className="modal-mention-container">
-      <div className="modal-mention-content-container">
-        <div className="modal-mention-left-content">
-          {data.getUserById.profileImageUrl === "" ? (
-            <img src="../../src/assets/dummy_avatar.jpg" alt="" />
-          ) : (
-            <img src={data.getUserById.profileImageUrl}></img>
-          )}
-        </div>
-        <div className="modal-mention-right-content">
-          <p className="modal-mention-username">
-            {data.getUserById.firstName} {data.getUserById.lastName}
-          </p>
+  if (loading) {
+    return (
+      <div className="modal-mention-container">
+        <p>Loading...</p>
+      </div>
+    );
+  } else {
+    console.log(data);
+
+    return (
+      <div className="modal-mention-container">
+        <div className="modal-mention-content-container">
+          <div className="modal-mention-left-content">
+            <img src={data.getUserById.profile_picture}></img>
+          </div>
+          <div className="modal-mention-right-content">
+            <p className="modal-mention-username">
+              {data.getUserById.firstName} {data.getUserById.lastName}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default MentionModal;

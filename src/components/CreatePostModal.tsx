@@ -222,7 +222,7 @@ const CreatePostModal = ({
             {localUrl.url === "" ? null : localUrl.type === "image" ? (
               <img src={localUrl.url} className="w-full" alt="" />
             ) : (
-              <video src={localUrl.url}></video>
+              <video src={localUrl.url} className="w-full"></video>
             )}
             <MentionsInput
               id="test-rich-text"

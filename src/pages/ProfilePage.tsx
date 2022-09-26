@@ -99,7 +99,7 @@ const ProfilePage = () => {
   });
 
   return (
-    <div className="white-bg full-screen center-col">
+    <div className="white-bg center-col">
       {eduModal && <CreateEducationModal closeModal={setEduModal} />}
 
       {expModal && <CreateExperienceModal closeModal={setExpModal} />}

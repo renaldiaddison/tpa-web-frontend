@@ -301,7 +301,7 @@ const UserInformation = ({ currentUser, refetchCurrentUser, edit }: any) => {
     }
   });
 
-  UserContext.user.Follows.map((followData: any) => {
+  currentUser.Follows.map((followData: any) => {
     if (followData.followId === currentUser.id) {
       alreadyFollowed = true;
     }

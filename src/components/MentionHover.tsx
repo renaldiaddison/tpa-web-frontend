@@ -17,16 +17,16 @@ const MentionHover = ({ text }: { text: string }) => {
   let userIdSubString = text.substring(firstIndexUserId + 1, lastIndexUserId);
 
   return (
-    <span style={{ position: "relative" }}>
+    <span style={{ position: "relative"}}>
       {modalMention === true && <MentionModal userId={userIdSubString} />}
       <Link
-        className="richText-a"
-        onMouseOver={() => setModalMention(true)}
-        onMouseLeave={() => setModalMention(false)}
+        // onMouseOver={() => setModalMention(true)}
+        // onMouseLeave={() => setModalMention(false)}
         to={`/profile/${userIdSubString}`}
       >
-        {mentionTagSubString} &nbsp;
+        {mentionTagSubString}
       </Link>
+      {" "}
     </span>
   );
 };
