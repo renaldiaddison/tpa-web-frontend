@@ -14,6 +14,7 @@ import Post from "../components/Post";
 const HomePage = () => {
   const UserContext = useUserContext();
   const [postModal, setPostModal] = useState(false);
+  const [hasMorePost, setHasMorePost] = useState(true);
   const [limit, setLimit] = useState(5);
   const [offset, setOffset] = useState(0);
   const {
@@ -46,38 +47,45 @@ const HomePage = () => {
 
   window.onscroll = () => {
     if (window.innerHeight + window.scrollY > document.body.offsetHeight) {
-      fetchMore({
-        variables: { Offset: data.Posts.length },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          let check = false;
+      if (hasMorePost && networkStatus !== 3) {
+        fetchMore({
+          variables: { Offset: data.Posts.length },
+          updateQuery: (previousResult, { fetchMoreResult }) => {
+            console.log(previousResult);
+            console.log(fetchMoreResult);
 
-          for (let index = 0; index < previousResult.Posts.length; index++) {
-            for (
-              let index2 = 0;
-              index2 < fetchMoreResult.Posts.length;
-              index2++
-            ) {
-              if (
-                previousResult.Posts[index].id ===
-                fetchMoreResult.Posts[index2].id
+            if (!fetchMoreResult.Posts.length) setHasMorePost(false);
+            else setHasMorePost(true);
+
+            let check = false;
+
+            for (let index = 0; index < previousResult.Posts.length; index++) {
+              for (
+                let index2 = 0;
+                index2 < fetchMoreResult.Posts.length;
+                index2++
               ) {
-                check = true;
+                if (
+                  previousResult.Posts[index].id ===
+                  fetchMoreResult.Posts[index2].id
+                ) {
+                  check = true;
+                }
               }
             }
-          }
 
-          if (check === true) {
-            return previousResult;
-          } else {
-            return {
-              Posts: [...previousResult.Posts, ...fetchMoreResult.Posts],
-            };
-          }
-        },
-      });
-      console.log(window.innerHeight);
-      console.log(window.scrollY);
-      console.log(document.body.offsetHeight);
+            console.log(check);
+
+            if (check === true) {
+              return previousResult;
+            } else {
+              return {
+                Posts: [...previousResult.Posts, ...fetchMoreResult.Posts],
+              };
+            }
+          },
+        });
+      }
     }
   };
 
