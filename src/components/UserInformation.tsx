@@ -283,10 +283,8 @@ const UserInformation = ({ currentUser, refetchCurrentUser, edit }: any) => {
 
   UserContext.user.Connection.map((connectionData: any) => {
     if (
-      (connectionData.user1.id === currentUser.id &&
-        connectionData.user1.id !== UserContext.user.id) ||
-      (connectionData.user2.id === currentUser.id &&
-        connectionData.user1.id !== UserContext.user.id)
+      connectionData.user1.id === currentUser.id ||
+      connectionData.user2.id === currentUser.id
     ) {
       alreadyConnected = true;
     }

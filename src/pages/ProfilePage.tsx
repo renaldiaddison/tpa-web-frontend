@@ -69,13 +69,7 @@ const ProfilePage = () => {
   useEffect(() => {
     console.log("masuk ni refetch");
     UserContext.refetchUser();
-    refetchCurrentUser()
-      .then((e) => {
-        toastSuccess("berhasil");
-      })
-      .catch((e) => {
-        toastError("error");
-      });
+    refetchCurrentUser();
   }, [p.id]);
 
   useEffect(() => {
