@@ -1,7 +1,8 @@
 import { useMutation } from "@apollo/client";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiFillEdit } from "react-icons/ai";
+import { useParams } from "react-router-dom";
 import { storage } from "../config/firebase-config";
 import { useUserContext } from "../lib/UserContext";
 import { AddNotification } from "../queries/NotificationQueries";
@@ -19,8 +20,8 @@ import {
 import stringGen from "../script/Helper";
 import { toastError, toastSuccess } from "../script/Toast";
 import UpdateUserModal from "./UpdateUserModal";
-
 const UserInformation = ({ currentUser, refetchCurrentUser, edit }: any) => {
+  const p = useParams();
   const [updateProfilePicture] = useMutation(UpdateProfilePicture);
   const [updateBackgroundPicture] = useMutation(UpdateBackgroundPicture);
 
@@ -282,8 +283,10 @@ const UserInformation = ({ currentUser, refetchCurrentUser, edit }: any) => {
 
   UserContext.user.Connection.map((connectionData: any) => {
     if (
-      connectionData.user1.id === currentUser.id ||
-      connectionData.user2.id === currentUser.id
+      (connectionData.user1.id === currentUser.id &&
+        connectionData.user1.id !== UserContext.user.id) ||
+      (connectionData.user2.id === currentUser.id &&
+        connectionData.user1.id !== UserContext.user.id)
     ) {
       alreadyConnected = true;
     }
@@ -296,7 +299,7 @@ const UserInformation = ({ currentUser, refetchCurrentUser, edit }: any) => {
   });
 
   UserContext.user.ConnectRequest.map((connectRequestData: any) => {
-    if (connectRequestData.fromUser.id === UserContext.user.id) {
+    if (connectRequestData.fromUser.id === currentUser.id) {
       giveConnectionStatus = true;
     }
   });
@@ -312,6 +315,7 @@ const UserInformation = ({ currentUser, refetchCurrentUser, edit }: any) => {
       alreadyBlocked = true;
     }
   });
+  console.log(edit);
 
   return (
     <div className="profile bg-white">

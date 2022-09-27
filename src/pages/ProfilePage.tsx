@@ -12,7 +12,7 @@ import {
 import { UserContext, useUserContext } from "../lib/UserContext";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { toastError } from "../script/Toast";
+import { toastError, toastSuccess } from "../script/Toast";
 import { CreateEducation, GetUserEducation } from "../queries/EducationQueries";
 import { GetUserExperience } from "../queries/ExperienceQueries";
 import CreateEducationModal from "../components/CreateEducationModal";
@@ -24,6 +24,7 @@ import Experience from "../components/Experience";
 import UserInformation from "../components/UserInformation";
 import UserSuggestionProfile from "../components/UserSuggestionProfile";
 import Footer from "../components/Footer";
+import { toast } from "react-toastify";
 
 const ProfilePage = () => {
   const p = useParams();
@@ -57,15 +58,25 @@ const ProfilePage = () => {
   });
 
   useEffect(() => {
+    console.log("masuk");
     if (p.id === UserContext.user.id) {
       setEdit(true);
+    } else {
+      setEdit(false);
     }
   }, [UserContext.user.id, p.id]);
 
   useEffect(() => {
+    console.log("masuk ni refetch");
     UserContext.refetchUser();
-    refetchCurrentUser();
-  }, []);
+    refetchCurrentUser()
+      .then((e) => {
+        toastSuccess("berhasil");
+      })
+      .catch((e) => {
+        toastError("error");
+      });
+  }, [p.id]);
 
   useEffect(() => {
     if (dataVisit && data) {
