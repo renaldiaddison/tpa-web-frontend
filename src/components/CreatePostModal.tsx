@@ -25,7 +25,7 @@ const CreatePostModal = ({
   const [mutationPost] = useMutation(CreatePost);
   const [file, setFile] = useState<File>();
   const [buttonDisable, setButtonDisable] = useState(true);
-  const [removeFileStyle, setRemoveFileStyle] = useState("none");
+  const [removeFileStyle, setRemoveFileStyle] = useState("hidden");
   const [addHashtagMutation] = useMutation(AddHashtag);
 
   const [localUrl, setLocalUrl] = useState({
@@ -143,7 +143,7 @@ const CreatePostModal = ({
 
   const showRemoveAttachmentFile = () => {
     if (localUrl.url === "") {
-      setRemoveFileStyle("none");
+      setRemoveFileStyle("hidden");
     } else {
       setRemoveFileStyle("block");
     }
@@ -268,17 +268,17 @@ const CreatePostModal = ({
             </div>
             <div className="w-full flex-r mt-1">
               <button
-                className={`cursor-pointer bg-red-500 border-red-500 button-red-style text-white font-bold rounded-lg px-5 py-1  mr-2 ${removeFileStyle}`}
-                onClick={removeFileHandler}
-              >
-                Delete
-              </button>
-              <button
-                className="cursor-pointer bg-blue-500 border-blue-500 button-style font-bold rounded-lg text-white px-5 py-1"
+                className="cursor-pointer bg-blue-500 border-blue-500 button-style font-bold rounded-lg text-white px-5 py-1  mr-2 "
                 disabled={buttonDisable}
                 onClick={uploadHandler}
               >
                 Post
+              </button>
+              <button
+                className={`cursor-pointer bg-red-500 border-red-500 button-red-style text-white font-bold rounded-lg px-5 py-1 ${removeFileStyle}`}
+                onClick={removeFileHandler}
+              >
+                Delete
               </button>
             </div>
           </div>

@@ -23,6 +23,7 @@ import { useLocalStorage } from "./hooks/LocalStorage";
 import JobPage from "./pages/JobPage";
 import MyNetworkPage from "./pages/MyNetworkPage";
 import NotificationPage from "./pages/NotificationPage";
+import SearchPage from "./pages/SearchPage";
 
 const Protected = () => {
   return (
@@ -92,6 +93,7 @@ function App() {
           <Route path="/job" element={<JobPage />}></Route>
           <Route path="/my-network" element={<MyNetworkPage />}></Route>
           <Route path="/notification" element={<NotificationPage />}></Route>
+          <Route path="/search/:text" element={<SearchPage />}></Route>
         </Route>
         <Route
           path="*"

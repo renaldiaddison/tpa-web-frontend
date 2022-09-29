@@ -25,7 +25,7 @@ import {
 import { mentionInputCommentStyle, mentionStyle } from "../script/Helper";
 import { toastError, toastSuccess } from "../script/Toast";
 import PostReply from "./PostReply";
-import RichTextTemplateHome from "./RichTextTemplateHome";
+import RichTextTemplateHome from "./RichTextTemplate";
 
 const PostComment = ({
   commentId,
@@ -230,8 +230,6 @@ const PostComment = ({
     fecthMoreReply({
       variables: { Offset: dataReply.repliedToComments.length },
       updateQuery: (previousResult, { fetchMoreResult }) => {
-        let check = false;
-        if (!fetchMoreResult.repliedToComments) return previousResult;
         if (
           previousResult.repliedToComments.length +
             fetchMoreResult.repliedToComments.length ==
@@ -240,26 +238,7 @@ const PostComment = ({
           setHasMore(false);
         }
 
-        for (
-          let index = 0;
-          index < previousResult.repliedToComments.length;
-          index++
-        ) {
-          for (
-            let index2 = 0;
-            index2 < fetchMoreResult.repliedToComments.length;
-            index2++
-          ) {
-            if (
-              previousResult.repliedToComments[index].id ===
-              fetchMoreResult.repliedToComments[index2].id
-            ) {
-              check = true;
-            }
-          }
-        }
-
-        if (check === true || fetchMoreResult.repliedToComments.length == 0) {
+        if (fetchMoreResult.repliedToComments.length === 0) {
           return previousResult;
         } else {
           return {
@@ -271,12 +250,9 @@ const PostComment = ({
         }
       },
     })
-      .then((e) => {
-        console.log(e);
-      })
+      .then((e) => {})
       .catch((e) => {
         setHasMore(false);
-        console.log(e);
       });
   };
 
@@ -432,8 +408,11 @@ const PostComment = ({
                 return <PostReply key={replyData.id} replyId={replyData.id} />;
               })}
             {displayInputComment === "flex" && hasMore == true && (
-              <div className="button-comment-container">
-                <button className="button-load-more" onClick={handleFetchMore}>
+              <div className="mb-3">
+                <button
+                  className="cursor-pointer bg-blue-500 border-blue-500 button-style text-white font-bold rounded-lg"
+                  onClick={handleFetchMore}
+                >
                   Load more reply
                 </button>
               </div>

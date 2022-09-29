@@ -11,7 +11,7 @@ import {
   PostComments,
 } from "../queries/PostQueries";
 import { toastSuccess, toastError } from "../script/Toast";
-import RichTextTemplateHome from "./RichTextTemplateHome";
+import RichTextTemplateHome from "./RichTextTemplate";
 
 const PostReply = ({ replyId }: { replyId: string }) => {
   const UserContext = useUserContext();

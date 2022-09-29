@@ -23,8 +23,6 @@ const MyNetworkPage = () => {
     variables: { userId: UserContext.user.id },
   });
 
-  console.log(UserContext.user.Connection);
-
   return (
     <div className="white-bg center-col">
       <Navbar></Navbar>

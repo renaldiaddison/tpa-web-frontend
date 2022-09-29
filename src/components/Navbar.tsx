@@ -8,12 +8,14 @@ import { useLocalStorage } from "../hooks/LocalStorage";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { UserContext, useUserContext } from "../lib/UserContext";
+import { toastError } from "../script/Toast";
 
 const Navbar = () => {
   const UserContext = useUserContext();
   const [token, setToken] = useLocalStorage("token", "");
   const [userId, setUserId] = useLocalStorage("userId", "");
   const navigate = useNavigate();
+  const [searchText, setSearchText] = useState("");
 
   const handleLogOut = (e: any) => {
     e.preventDefault();
@@ -37,13 +39,33 @@ const Navbar = () => {
     navigate("/home");
   };
 
+  const handleKeyDown = (e: any) => {
+    if (e.key === "Enter") {
+      if (searchText === "") {
+        toastError("Search text cannot be empty");
+      } else {
+        navigate("/search/" + searchText);
+      }
+    }
+  };
+
+  const handleChangeSearch = (e: any) => {
+    setSearchText(e.target.value);
+  };
+
   return (
     <div className="white-bg w-screen navbar">
       <BsLinkedin
         className="navbar-logo cursor-pointer"
         onClick={home}
       ></BsLinkedin>
-      <input type="text" className="searchbar white-bg" placeholder="Search" />
+      <input
+        onChange={handleChangeSearch}
+        onKeyDown={handleKeyDown}
+        type="text"
+        className="searchbar white-bg"
+        placeholder="Search"
+      />
       <div className="navbar-menu-container mb-5">
         <NavLink to="/home" className={handleActivePage}>
           <AiFillHome className="navbar-icon"></AiFillHome>

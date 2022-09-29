@@ -1,0 +1,21 @@
+.button-margin {
+    margin: 10px;
+}
+
+.filter-container {
+    display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+	align-content: stretch;
+    width: fit-content;
+    height: 100px;
+}
+
+.post-search-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}

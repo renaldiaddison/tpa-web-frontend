@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { NetworkStatus, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
@@ -15,8 +15,6 @@ const HomePage = () => {
   const UserContext = useUserContext();
   const [postModal, setPostModal] = useState(false);
   const [hasMorePost, setHasMorePost] = useState(true);
-  const [limit, setLimit] = useState(5);
-  const [offset, setOffset] = useState(0);
   const {
     loading: loadingHashtag,
     data: dataHashtag,
@@ -42,43 +40,20 @@ const HomePage = () => {
     refetchPost();
   }, []);
 
-  if (loading || loadingHashtag) return <p>loading</p>;
+  if (!data || !dataHashtag) return <p>loading</p>;
   if (error || errorHashtag) return <p>error</p>;
 
   window.onscroll = () => {
     if (window.innerHeight + window.scrollY > document.body.offsetHeight) {
-      if (hasMorePost && networkStatus !== 3) {
+      if (hasMorePost && networkStatus !== NetworkStatus.fetchMore) {
         fetchMore({
           variables: { Offset: data.Posts.length },
           updateQuery: (previousResult, { fetchMoreResult }) => {
-            console.log(previousResult);
-            console.log(fetchMoreResult);
-
-            if (!fetchMoreResult.Posts.length) setHasMorePost(false);
-            else setHasMorePost(true);
-
-            let check = false;
-
-            for (let index = 0; index < previousResult.Posts.length; index++) {
-              for (
-                let index2 = 0;
-                index2 < fetchMoreResult.Posts.length;
-                index2++
-              ) {
-                if (
-                  previousResult.Posts[index].id ===
-                  fetchMoreResult.Posts[index2].id
-                ) {
-                  check = true;
-                }
-              }
-            }
-
-            console.log(check);
-
-            if (check === true) {
+            if (fetchMoreResult.Posts.length === 0) {
+              setHasMorePost(false);
               return previousResult;
             } else {
+              setHasMorePost(true);
               return {
                 Posts: [...previousResult.Posts, ...fetchMoreResult.Posts],
               };
@@ -134,7 +109,9 @@ const HomePage = () => {
           </div>
         </div>
 
-        {networkStatus === 3 && <InfinitySpin width="200" color="#3B82F6" />}
+        {networkStatus === NetworkStatus.fetchMore && (
+          <InfinitySpin width="200" color="#3B82F6" />
+        )}
       </div>
 
       <Footer></Footer>

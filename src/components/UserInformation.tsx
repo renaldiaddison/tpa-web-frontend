@@ -313,7 +313,6 @@ const UserInformation = ({ currentUser, refetchCurrentUser, edit }: any) => {
       alreadyBlocked = true;
     }
   });
-  console.log(edit);
 
   return (
     <div className="profile bg-white">

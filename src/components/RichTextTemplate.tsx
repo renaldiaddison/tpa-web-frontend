@@ -8,13 +8,11 @@ import {
   HashtagRichText2,
 } from "../model/RichText";
 
-const RichTextTemplateHome = ({ texts }: { texts: string[] }) => {
+const RichTextTemplate = ({ texts }: { texts: string[] }) => {
   return (
     <>
       {texts.map((text, index) => {
         if (text.match(HashtagRichText2)) {
-          console.log("match hastag2");
-
           let firstIndexHastag = text.indexOf("[");
           let lastIndexHastag = text.indexOf("]");
           let hastagSubString = text.substring(
@@ -51,4 +49,4 @@ const RichTextTemplateHome = ({ texts }: { texts: string[] }) => {
   );
 };
 
-export default RichTextTemplateHome;
+export default RichTextTemplate;

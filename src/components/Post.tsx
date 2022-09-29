@@ -17,7 +17,7 @@ import { mentionInputPostStyle, mentionStyle } from "../script/Helper";
 import { toastError, toastSuccess } from "../script/Toast";
 import PostComment from "./PostComment";
 import PosterCard from "./PosterCard";
-import RichTextTemplateHome from "./RichTextTemplateHome";
+import RichTextTemplate from "./RichTextTemplate";
 
 const Post = ({
   initialValueTotalComment,
@@ -207,8 +207,6 @@ const Post = ({
     fecthMoreComment({
       variables: { Offset: dataComment.postComments.length },
       updateQuery: (previousResult, { fetchMoreResult }) => {
-        let check = false;
-
         if (
           previousResult.postComments.length +
             fetchMoreResult.postComments.length ==
@@ -217,26 +215,7 @@ const Post = ({
           setHasMore(false);
         }
 
-        for (
-          let index = 0;
-          index < previousResult.postComments.length;
-          index++
-        ) {
-          for (
-            let index2 = 0;
-            index2 < fetchMoreResult.postComments.length;
-            index2++
-          ) {
-            if (
-              previousResult.postComments[index].id ===
-              fetchMoreResult.postComments[index2].id
-            ) {
-              check = true;
-            }
-          }
-        }
-
-        if (check === true || fetchMoreResult.postComments.length == 0) {
+        if (fetchMoreResult.postComments.length == 0) {
           return previousResult;
         } else {
           return {
@@ -358,7 +337,7 @@ const Post = ({
           <div className="">
             <div className="">
               <p>
-                <RichTextTemplateHome texts={texts} />
+                <RichTextTemplate texts={texts} />
               </p>
             </div>
             <div className="w-full">

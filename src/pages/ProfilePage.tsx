@@ -58,7 +58,6 @@ const ProfilePage = () => {
   });
 
   useEffect(() => {
-    console.log("masuk");
     if (p.id === UserContext.user.id) {
       setEdit(true);
     } else {
@@ -67,7 +66,6 @@ const ProfilePage = () => {
   }, [UserContext.user.id, p.id]);
 
   useEffect(() => {
-    console.log("masuk ni refetch");
     UserContext.refetchUser();
     refetchCurrentUser();
   }, [p.id]);
@@ -124,7 +122,7 @@ const ProfilePage = () => {
                 <p className="text-black text-l bold m-profile">Education</p>
                 {edit === true && (
                   <button
-                    className="cursor-pointer button-grey-style bg-white text-white font-bold rounded m-profile border"
+                    className="cursor-pointer bg-blue-500 border-blue-500 button-style text-white font-bold rounded-lg px-2 rounded m-profile"
                     onClick={() => setEduModal(true)}
                   >
                     <AiOutlinePlus className="logo"></AiOutlinePlus>
@@ -152,7 +150,7 @@ const ProfilePage = () => {
                 <p className="text-black text-l bold m-profile">Experiences</p>
                 {edit === true && (
                   <button
-                    className="cursor-pointer button-grey-style bg-white text-white font-bold rounded m-profile border"
+                    className="cursor-pointer bg-blue-500 border-blue-500 button-style text-white font-bold rounded-lg px-2 rounded m-profile"
                     onClick={() => setExpModal(true)}
                   >
                     <AiOutlinePlus className="logo"></AiOutlinePlus>
