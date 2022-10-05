@@ -230,6 +230,15 @@ export const DeleteBlock = gql`
   }
 `;
 
+export const Blocks = gql`
+  query blocks($userId: ID!) {
+    blocks(userId: $userId) {
+      userId
+      blockId
+    }
+  }
+`;
+
 export const UserSuggestion = gql`
   query UserSuggestion($userId: ID!) {
     UserSuggestion(userId: $userId) {
@@ -286,6 +295,18 @@ export const UpdateUser = gql`
       additionalName
       about
       location
+    }
+  }
+`;
+
+export const UserConnected = gql`
+  query UserConnected($userId: ID!) {
+    UserConnected(userId: $userId) {
+      id
+      firstName
+      lastName
+      profile_picture
+      background_picture
     }
   }
 `;

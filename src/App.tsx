@@ -24,6 +24,7 @@ import JobPage from "./pages/JobPage";
 import MyNetworkPage from "./pages/MyNetworkPage";
 import NotificationPage from "./pages/NotificationPage";
 import SearchPage from "./pages/SearchPage";
+import MessagePage from "./pages/MessagePage";
 
 const Protected = () => {
   return (
@@ -94,6 +95,7 @@ function App() {
           <Route path="/my-network" element={<MyNetworkPage />}></Route>
           <Route path="/notification" element={<NotificationPage />}></Route>
           <Route path="/search/:text" element={<SearchPage />}></Route>
+          <Route path="/message/*" element={<MessagePage />}></Route>
         </Route>
         <Route
           path="*"

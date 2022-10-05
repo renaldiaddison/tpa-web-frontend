@@ -243,7 +243,7 @@ const CreatePostModal = ({
             <div className="flex">
               <div className="mr-2">
                 <label htmlFor="video-input" className="video">
-                  <AiFillPicture size={30} />
+                  <AiFillPicture size={30}  />
                 </label>
 
                 <input
@@ -255,7 +255,10 @@ const CreatePostModal = ({
               </div>
               <div className="">
                 <label htmlFor="file-input" className="photo">
-                  <BsFillCameraVideoFill size={30} />
+                  <BsFillCameraVideoFill
+                    size={30}
+                    className=" cursor-pointer"
+                  />
                 </label>
 
                 <input
