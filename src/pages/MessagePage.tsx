@@ -6,7 +6,6 @@ import Footer from "../components/Footer";
 import MessageList from "../components/MessageList";
 import MessageNew from "../components/MessageNew";
 import MessageRoom from "../components/MessageRoom";
-import MessageTemporary from "../components/MessageTemporary";
 import Navbar from "../components/Navbar";
 import { useUserContext } from "../lib/UserContext";
 import { Rooms } from "../queries/MessageQueries";
