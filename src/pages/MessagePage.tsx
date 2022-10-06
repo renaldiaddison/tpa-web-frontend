@@ -70,19 +70,6 @@ const MessagePage = () => {
                 path="/:roomId"
                 element={<MessageRoom userBlockData={dataBlock.blocks} />}
               ></Route>
-              {/* <Route
-                path="/temp/:userId"
-                element={<MessageTemporary roomData={data.rooms} />}
-              ></Route> */}
-              {/* <Route
-                path="/new"
-                element={
-                  <MessageNew
-                    roomData={data.rooms}
-                    userBlockData={dataBlock.blocks}
-                  />
-                }
-              ></Route> */}
             </Routes>
           </div>
         </div>
