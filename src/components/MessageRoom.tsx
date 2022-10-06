@@ -170,13 +170,6 @@ const MessageRoom = ({ userBlockData }: any) => {
                   return (
                     <div className="">
                       <div className="mb-4">
-                        {/* {messageData.text !== "" && (
-                          <MessageText messageData={messageData} />
-                        )}
-                        {messageData.imageUrl !== "" && (
-                          <MessageMyImage messageData={messageData} />
-                        )} */}
-
                         <MessageCard messageData={messageData}></MessageCard>
                       </div>
                     </div>
@@ -201,19 +194,20 @@ const MessageRoom = ({ userBlockData }: any) => {
 
         {checkUserBlock === "" && checkCurrentUserBlock === "" && (
           <div className="w-full absolute message-bottom-content">
-            {localUrl.url === "" ? null : localUrl.type === "image" ? (
+            {/* {localUrl.url === "" ? null : localUrl.type === "image" ? (
               <div className="text-preview">Preview Image</div>
             ) : (
               <div>Preview Video</div>
-            )}
-            {/* {localUrl.url === "" ? null : localUrl.type === "image" ? (
-              <img src={localUrl.url} className="w-full border-sizing" alt="" />
+            )} */}
+            {localUrl.url === "" ? null : localUrl.type === "image" ? (
+              <img src={localUrl.url} className="image-preview border-sizing cursor-pointer" onClick={removeFileHandler} alt="" />
             ) : (
               <video
                 src={localUrl.url}
-                className="w-full border-sizing"
+                className="image-preview border-sizing cursor-pointer"
+                onClick={removeFileHandler}
               ></video>
-            )} */}
+            )}
 
             <div className="w-full">
               <div className="flex">
